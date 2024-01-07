@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: split-wise-postgres
+    image: postgres:16.1-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - split-wise-postgres:/data/postgres
+    ports:
+      - "5432:5432"
+
+volumes:
+  split-wise-postgres:

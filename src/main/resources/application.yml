@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: split-wise
+  liquibase:
+    change-log: classpath*:db/changelog/db.changelog-master.xml
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:split_wise}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driverClassName: org.postgresql.Driver
+    hikari:
+      connection-timeout: 1000
+      minimum-idle: ${DB_MINIMUM_IDLE:5}
+      maximum-pool-size: ${DB_MAXIMUM_POOL_SIZE:100}
