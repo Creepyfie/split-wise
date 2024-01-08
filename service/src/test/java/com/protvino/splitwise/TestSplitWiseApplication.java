@@ -19,5 +19,4 @@ public class TestSplitWiseApplication {
 	public static void main(String[] args) {
 		SpringApplication.from(SplitWiseApplication::main).with(TestSplitWiseApplication.class).run(args);
 	}
-
 }

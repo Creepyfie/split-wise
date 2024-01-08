@@ -1,4 +1,4 @@
-package com.protvino.splitwise;
+package test.java.com.protvino.splitwise;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
