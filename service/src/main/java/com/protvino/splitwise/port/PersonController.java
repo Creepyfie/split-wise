@@ -16,17 +16,17 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequestMapping("/person")
 public class PersonController {
 
-    Map<Integer, PersonDto> persons = new HashMap<>();
+    Map<Long, PersonDto> persons = new HashMap<>();
 
     @GetMapping("/{id}")
-    public PersonDto getPerson(@PathVariable Integer id) {
+    public PersonDto getPerson(@PathVariable Long id) {
         return persons.get(id);
     }
 
     @PostMapping
-    public Integer createPerson() {
+    public Long createPerson() {
         PersonDto person = PersonDto.builder()
-            .id(ThreadLocalRandom.current().nextInt())
+            .id(ThreadLocalRandom.current().nextLong())
             .firstName("firstName_" + ThreadLocalRandom.current().nextInt(1000))
             .lastName("lastName_" + ThreadLocalRandom.current().nextInt(1000))
             .build();
