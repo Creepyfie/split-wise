@@ -7,7 +7,7 @@ import lombok.Value;
 @Builder
 public class PersonDto {
 
-    Integer id;
+    Long id;
     String firstName;
     String lastName;
 }
