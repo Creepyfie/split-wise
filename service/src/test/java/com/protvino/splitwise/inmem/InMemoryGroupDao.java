@@ -3,7 +3,6 @@ package com.protvino.splitwise.inmem;
 import com.protvino.splitwise.adapter.GroupDAO;
 import com.protvino.splitwise.domain.request.EditGroupRequest;
 import com.protvino.splitwise.domain.value.Group;
-import com.protvino.splitwise.port.dto.GroupDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,5 +33,9 @@ public class InMemoryGroupDao  implements GroupDAO {
     @Override
     public Group findById(Long id) {
         return rows.get(id);
+    }
+
+    public void clear(){
+        rows.clear();
     }
 }
