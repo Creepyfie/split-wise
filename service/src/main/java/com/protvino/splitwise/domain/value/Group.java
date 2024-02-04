@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class Group {
+
     Long id;
     String name;
-
 }

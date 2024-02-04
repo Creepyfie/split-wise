@@ -21,14 +21,12 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class SqlGroupDao implements GroupDAO{
+
     private final NamedParameterJdbcOperations jdbc;
     private final GroupRowMapper groupRowMapper = new GroupRowMapper();
 
-
-
-
     @Override
-    public Long create(EditGroupRequest request) {
+    public long create(EditGroupRequest request) {
         Timestamp now = Timestamp.from(Instant.now());
 
         SqlParameterSource params = new MapSqlParameterSource()

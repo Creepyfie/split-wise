@@ -11,8 +11,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class InMemoryGroupDao  implements GroupDAO {
 
     Map<Long, Group> rows = new HashMap<>();
+
     @Override
-    public Long create(EditGroupRequest editGroupRequest) {
+    public long create(EditGroupRequest editGroupRequest) {
         long id = ThreadLocalRandom.current().nextLong(0, 100000);
         rows.put(id, new Group(id, editGroupRequest.getName()));
         return id;
@@ -27,7 +28,7 @@ public class InMemoryGroupDao  implements GroupDAO {
 
     @Override
     public void delete(Long id) {
-            rows.remove(id);
+        rows.remove(id);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class InMemoryGroupDao  implements GroupDAO {
         return rows.get(id);
     }
 
-    public void clear(){
+    public void clear() {
         rows.clear();
     }
 }

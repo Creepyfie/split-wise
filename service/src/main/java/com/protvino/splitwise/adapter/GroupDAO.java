@@ -4,9 +4,12 @@ import com.protvino.splitwise.domain.request.EditGroupRequest;
 import com.protvino.splitwise.domain.value.Group;
 
 public interface GroupDAO {
-    Long create(EditGroupRequest editGroupRequest);
-    void update(Long id, EditGroupRequest editGroupRequest);
-    void delete(Long id);
-    Group findById(Long id);
 
+    long create(EditGroupRequest editGroupRequest);
+
+    void update(Long id, EditGroupRequest editGroupRequest);
+
+    void delete(Long id);
+
+    Group findById(Long id);
 }
