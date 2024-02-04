@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @RestController
 @RequestMapping("/group")
 public class GroupController {
+
     Map<Long, GroupDto> groups = new HashMap<>();
 
     @GetMapping
@@ -20,7 +21,7 @@ public class GroupController {
     {
         GroupDto groupDto = GroupDto.builder()
                 .id(ThreadLocalRandom.current().nextLong())
-                .name("firstName_" + ThreadLocalRandom.current().nextInt(1000))
+                .name("groupName_" + ThreadLocalRandom.current().nextInt(1000))
                 .build();
         groups.put(groupDto.getId(),groupDto);
         return groupDto.getId();

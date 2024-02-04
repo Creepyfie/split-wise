@@ -21,7 +21,7 @@ public class GroupDaoTest extends IntegrationTest {
         @BeforeEach
         @AfterEach
         void setup() {
-            clearTables("persons");
+            clearTables("groups");
         }
         @Override
         GroupDAO getDAO() {
