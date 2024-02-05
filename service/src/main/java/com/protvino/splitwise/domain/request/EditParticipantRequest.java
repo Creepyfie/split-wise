@@ -3,7 +3,8 @@ package com.protvino.splitwise.domain.request;
 import lombok.Value;
 
 @Value
-public class EditGroupRequest {
+public class EditParticipantRequest {
 
-    String name;
+    Long person_id;
+    Long group_id;
 }

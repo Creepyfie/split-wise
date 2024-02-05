@@ -1,6 +1,6 @@
 package com.protvino.splitwise.inmem;
 
-import com.protvino.splitwise.adapter.GroupDAO;
+import com.protvino.splitwise.adapter.GroupDao;
 import com.protvino.splitwise.domain.request.EditGroupRequest;
 import com.protvino.splitwise.domain.value.Group;
 
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class InMemoryGroupDao  implements GroupDAO {
+public class InMemoryGroupDao  implements GroupDao {
 
     Map<Long, Group> rows = new HashMap<>();
 
