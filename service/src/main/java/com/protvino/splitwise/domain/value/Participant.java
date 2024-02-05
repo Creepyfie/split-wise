@@ -3,8 +3,9 @@ package com.protvino.splitwise.domain.value;
 import lombok.Value;
 
 @Value
-public class Group {
+public class Participant {
 
     Long id;
-    String name;
+    Long person_id;
+    Long group_id;
 }

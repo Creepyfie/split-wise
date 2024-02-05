@@ -3,7 +3,7 @@ package com.protvino.splitwise.adapter;
 import com.protvino.splitwise.domain.request.EditGroupRequest;
 import com.protvino.splitwise.domain.value.Group;
 
-public interface GroupDAO {
+public interface GroupDao {
 
     long create(EditGroupRequest editGroupRequest);
 

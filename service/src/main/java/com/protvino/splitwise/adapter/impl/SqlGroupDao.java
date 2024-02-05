@@ -1,6 +1,6 @@
 package com.protvino.splitwise.adapter.impl;
 
-import com.protvino.splitwise.adapter.GroupDAO;
+import com.protvino.splitwise.adapter.GroupDao;
 import com.protvino.splitwise.domain.request.EditGroupRequest;
 import com.protvino.splitwise.domain.value.Group;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +20,10 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class SqlGroupDao implements GroupDAO{
+public class SqlGroupDao implements GroupDao {
 
     private final NamedParameterJdbcOperations jdbc;
-    private final GroupRowMapper groupRowMapper = new GroupRowMapper();
+    private final RowMapper<Group> groupRowMapper = new GroupRowMapper();
 
     @Override
     public long create(EditGroupRequest request) {

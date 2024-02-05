@@ -1,10 +1,8 @@
 package com.protvino.splitwise.adapter.impl;
 
-import com.protvino.splitwise.adapter.GroupDAO;
+import com.protvino.splitwise.adapter.GroupDao;
 import com.protvino.splitwise.domain.request.EditGroupRequest;
-import com.protvino.splitwise.domain.request.EditPersonRequest;
 import com.protvino.splitwise.domain.value.Group;
-import com.protvino.splitwise.domain.value.Person;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +10,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("DAO")
 abstract class GroupDaoTestCases {
-    abstract GroupDAO getDAO();
+    abstract GroupDao getDao();
 
-    GroupDAO groupDAO = getDAO();
+    GroupDao groupDAO = getDao();
 
     @Test
     void create__when_does_not_exist() {
