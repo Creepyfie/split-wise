@@ -69,7 +69,7 @@ abstract class PersonDaoTestCases {
     }
 
     @Test
-    void find_by_id__when_exists() {
+    void find_byId__when_exists() {
         // Arrange
         String firstName = "firstName";
         String lastName = "lastName";
@@ -86,7 +86,7 @@ abstract class PersonDaoTestCases {
     }
 
     @Test
-    void find_by_id__when_does_not_exist() {
+    void find_byId__when_does_not_exist() {
         // Arrange
         String firstName = "firstName";
         String lastName = "lastName";

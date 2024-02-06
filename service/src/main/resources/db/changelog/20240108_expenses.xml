@@ -13,9 +13,6 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="group_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
             <column name="paying_participant_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

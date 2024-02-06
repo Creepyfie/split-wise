@@ -64,7 +64,7 @@ abstract class GroupDaoTestCases {
     }
 
     @Test
-    void find_by_id__when_exists() {
+    void find_byId__when_exists() {
         // Arrange
         String groupName = "GroupName";
         Long actualId = groupDAO.create(new EditGroupRequest(groupName));
@@ -79,7 +79,7 @@ abstract class GroupDaoTestCases {
                 .isEqualTo(expectedResult);
     }
     @Test
-    void find_by_id__when_does_not_exist() {
+    void find_byId__when_does_not_exist() {
         // Arrange
         String groupName = "GroupName";
         groupDAO.create(new EditGroupRequest(groupName));

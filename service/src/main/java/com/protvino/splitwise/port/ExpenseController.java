@@ -33,10 +33,9 @@ public class ExpenseController {
 
         List<ExpenseDto> result = new ArrayList<>();
 
-        for(Map.Entry<Long,ExpenseDto> entry: expenses.entrySet())
-        {
+        for(Map.Entry<Long,ExpenseDto> entry: expenses.entrySet()) {
             ExpenseDto expense = entry.getValue();
-            if(expense.getGroup_id() == group_id)
+            if(expense.getGroupId() == group_id)
                 result.add(expense);
         }
         return result;
@@ -46,7 +45,7 @@ public class ExpenseController {
     public Long createExpense() {
         ExpenseDto expense = ExpenseDto.builder()
             .id(ThreadLocalRandom.current().nextLong())
-            .group_id(ThreadLocalRandom.current().nextLong())
+            .groupId(ThreadLocalRandom.current().nextLong())
             .paying_participant_id(ThreadLocalRandom.current().nextLong())
             .total(ThreadLocalRandom.current().nextDouble())
             .comment("Comment" + ThreadLocalRandom.current().nextInt(1000))

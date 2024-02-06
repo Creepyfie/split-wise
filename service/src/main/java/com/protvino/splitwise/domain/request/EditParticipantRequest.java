@@ -5,6 +5,6 @@ import lombok.Value;
 @Value
 public class EditParticipantRequest {
 
-    Long person_id;
-    Long group_id;
+    Long personId;
+    Long groupId;
 }

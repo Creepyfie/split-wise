@@ -21,16 +21,16 @@ public abstract class ParticipantDaoTestCases {
     @Test
     void create__when_does_not_exist() {
         // Arrange
-        Long person_id = ThreadLocalRandom.current().nextLong();
-        Long group_id = ThreadLocalRandom.current().nextLong();
+        Long personId = ThreadLocalRandom.current().nextLong();
+        Long groupId = ThreadLocalRandom.current().nextLong();
 
         // Act
-        Long actualId = participantDao.create(new EditParticipantRequest(person_id, group_id));
+        Long actualId = participantDao.create(new EditParticipantRequest(personId, groupId));
 
         Participant actualResult = participantDao.findById(actualId);
 
         // Assert
-        Participant expectedResult = new Participant(actualId, person_id, group_id);
+        Participant expectedResult = new Participant(actualId, personId, groupId);
 
         assertThat(actualResult)
                 .isEqualTo(expectedResult);
@@ -40,19 +40,19 @@ public abstract class ParticipantDaoTestCases {
     void update__when_exists() {
 
         // Arrange
-        Long person_id = ThreadLocalRandom.current().nextLong();
-        Long group_id = ThreadLocalRandom.current().nextLong();
-        Long actualId = participantDao.create(new EditParticipantRequest(person_id, group_id));
+        Long personId = ThreadLocalRandom.current().nextLong();
+        Long groupId = ThreadLocalRandom.current().nextLong();
+        Long actualId = participantDao.create(new EditParticipantRequest(personId, groupId));
 
         // Act
-        Long updatedPerson_id = ThreadLocalRandom.current().nextLong();
-        Long updatedGroup_id = ThreadLocalRandom.current().nextLong();
-        participantDao.update(actualId, new EditParticipantRequest(updatedPerson_id, updatedGroup_id));
+        Long updatedPersonId = ThreadLocalRandom.current().nextLong();
+        Long updatedGroupId = ThreadLocalRandom.current().nextLong();
+        participantDao.update(actualId, new EditParticipantRequest(updatedPersonId, updatedGroupId));
 
         Participant actualResult = participantDao.findById(actualId);
 
         // Assert
-        Participant expectedResult = new Participant(actualId, updatedPerson_id, updatedGroup_id);
+        Participant expectedResult = new Participant(actualId, updatedPersonId, updatedGroupId);
 
         assertThat(actualResult)
                 .isEqualTo(expectedResult);
@@ -62,9 +62,9 @@ public abstract class ParticipantDaoTestCases {
     void update__when_does_not_exist() {
         // Arrange
         // Act
-        Long updatedPerson_id = ThreadLocalRandom.current().nextLong();
-        Long updatedGroup_id = ThreadLocalRandom.current().nextLong();
-        participantDao.update(123L, new EditParticipantRequest(updatedPerson_id, updatedGroup_id));
+        Long updatedPersonId = ThreadLocalRandom.current().nextLong();
+        Long updatedGroupId = ThreadLocalRandom.current().nextLong();
+        participantDao.update(123L, new EditParticipantRequest(updatedPersonId, updatedGroupId));
 
         Participant actualResult = participantDao.findById(123L);
 
@@ -74,28 +74,28 @@ public abstract class ParticipantDaoTestCases {
     }
 
     @Test
-    void find_by_id__when_exists() {
+    void find_byId__when_exists() {
         // Arrange
-        Long person_id = ThreadLocalRandom.current().nextLong();
-        Long group_id = ThreadLocalRandom.current().nextLong();
-        Long actualId = participantDao.create(new EditParticipantRequest(person_id, group_id));
+        Long personId = ThreadLocalRandom.current().nextLong();
+        Long groupId = ThreadLocalRandom.current().nextLong();
+        Long actualId = participantDao.create(new EditParticipantRequest(personId, groupId));
 
         // Act
         Participant actualResult = participantDao.findById(actualId);
 
         // Assert
-        Participant expectedResult = new Participant(actualId, person_id, group_id);
+        Participant expectedResult = new Participant(actualId, personId, groupId);
 
         assertThat(actualResult)
                 .isEqualTo(expectedResult);
     }
 
     @Test
-    void find_by_id__when_does_not_exist() {
+    void find_byId__when_does_not_exist() {
         // Arrange
-        Long person_id = ThreadLocalRandom.current().nextLong();
-        Long group_id = ThreadLocalRandom.current().nextLong();
-        participantDao.create(new EditParticipantRequest(person_id, group_id));
+        Long personId = ThreadLocalRandom.current().nextLong();
+        Long groupId = ThreadLocalRandom.current().nextLong();
+        participantDao.create(new EditParticipantRequest(personId, groupId));
 
         // Act
         Participant actualResult = participantDao.findById(123L);

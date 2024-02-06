@@ -8,8 +8,8 @@ import lombok.Value;
 public class ExpenseDto {
 
     Long id;
-    Long group_id;
-    Long paying_participant_id;
+    Long groupId;
+    Long paying_participantId;
     Double total;
     String comment;
 }

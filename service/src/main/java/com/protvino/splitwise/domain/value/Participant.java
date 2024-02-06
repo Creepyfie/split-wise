@@ -6,6 +6,6 @@ import lombok.Value;
 public class Participant {
 
     Long id;
-    Long person_id;
-    Long group_id;
+    Long personId;
+    Long groupId;
 }
