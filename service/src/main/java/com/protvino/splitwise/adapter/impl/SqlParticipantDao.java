@@ -66,7 +66,7 @@ public class SqlParticipantDao implements ParticipantDao{
 
         String sql = """
                 UPDATE participants
-                SET person_id = :person_id, group_id = :group_id, updated = :updated)
+                SET person_id = :person_id, group_id = :group_id, updated = :updated
                 WHERE id = :id
                 """;
 
