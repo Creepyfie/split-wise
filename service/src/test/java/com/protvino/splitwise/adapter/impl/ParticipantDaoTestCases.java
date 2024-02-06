@@ -95,7 +95,7 @@ public abstract class ParticipantDaoTestCases {
         // Arrange
         Long person_id = ThreadLocalRandom.current().nextLong();
         Long group_id = ThreadLocalRandom.current().nextLong();
-        Long actualId = participantDao.create(new EditParticipantRequest(person_id, group_id));
+        participantDao.create(new EditParticipantRequest(person_id, group_id));
 
         // Act
         Participant actualResult = participantDao.findById(123L);

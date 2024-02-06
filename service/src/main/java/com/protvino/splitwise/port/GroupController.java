@@ -13,8 +13,8 @@ public class GroupController {
 
     Map<Long, GroupDto> groups = new HashMap<>();
 
-    @GetMapping("/id")
-    public GroupDto getGroup(@PathVariable long id){return groups.get(id);}
+    @GetMapping("/{id}")
+    public GroupDto getGroup(@PathVariable Long id){return groups.get(id);}
 
     @PostMapping
     public Long createGroup()
