@@ -1,4 +1,4 @@
-package com.protvino.splitwise.inmem;
+package com.protvino.splitwise._inmem;
 
 import com.protvino.splitwise.adapter.PersonDao;
 import com.protvino.splitwise.domain.request.EditPersonRequest;
@@ -13,7 +13,7 @@ public class InMemoryPersonDao implements PersonDao {
     Map<Long, Person> rows = new HashMap<>();
 
     @Override
-    public Long create(EditPersonRequest request) {
+    public long create(EditPersonRequest request) {
         long id = ThreadLocalRandom.current().nextLong(0, 100000);
         rows.put(id, new Person(id, request.getFirstName(), request.getLastName()));
         return id;

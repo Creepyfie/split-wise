@@ -1,12 +1,9 @@
 package com.protvino.splitwise.adapter.impl;
 
 import com.protvino.splitwise.adapter.Debt_in_expenseDao;
-import com.protvino.splitwise.domain.request.EditDebt_in_expenseRequest;
-import com.protvino.splitwise.domain.request.EditExpenseRequest;
-import com.protvino.splitwise.domain.value.Debt_in_expense;
-import com.protvino.splitwise.domain.value.Expense;
+import com.protvino.splitwise.domain.request.EditDebtInExpenseRequest;
+import com.protvino.splitwise.domain.value.DebtInExpense;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -25,10 +22,10 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
 
     private final NamedParameterJdbcOperations jdbc;
 
-    private final RowMapper<Debt_in_expense> rowMapper = new Debt_in_expenseRowMapper();
+    private final RowMapper<DebtInExpense> rowMapper = new Debt_in_expenseRowMapper();
 
     @Override
-    public void create(EditDebt_in_expenseRequest request) {
+    public void create(EditDebtInExpenseRequest request) {
 
         Timestamp now = Timestamp.from(Instant.now());
 
@@ -49,7 +46,7 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
     }
 
     @Override
-    public void update(EditDebt_in_expenseRequest request) {
+    public void update(EditDebtInExpenseRequest request) {
 
         Timestamp now = Timestamp.from(Instant.now());
 
@@ -71,7 +68,7 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
     }
 
     @Override
-    public void delete(EditDebt_in_expenseRequest request) {
+    public void delete(EditDebtInExpenseRequest request) {
 
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("expense_id", request.getExpense_id())
@@ -87,7 +84,7 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
     }
 
     @Override
-    public List<Debt_in_expense> findByExpense_id(Long expense_id) {
+    public List<DebtInExpense> findByExpense_id(Long expense_id) {
 
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("expense_id", expense_id);
@@ -97,15 +94,15 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
             WHERE expense_id = :expense_id
             """;
 
-        List<Debt_in_expense> debts = jdbc.query(sql,params,rowMapper);
+        List<DebtInExpense> debts = jdbc.query(sql,params,rowMapper);
 
         return !debts.isEmpty() ? debts : null;
     }
 
-    static class Debt_in_expenseRowMapper implements RowMapper<Debt_in_expense> {
+    static class Debt_in_expenseRowMapper implements RowMapper<DebtInExpense> {
         @Override
-        public Debt_in_expense mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Debt_in_expense(
+        public DebtInExpense mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new DebtInExpense(
                 rs.getLong("expense_id"),
                 rs.getLong("from_participant_id"),
                 rs.getLong("to_participant_id"),

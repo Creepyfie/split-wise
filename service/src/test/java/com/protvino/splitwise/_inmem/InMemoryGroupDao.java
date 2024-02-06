@@ -1,4 +1,4 @@
-package com.protvino.splitwise.inmem;
+package com.protvino.splitwise._inmem;
 
 import com.protvino.splitwise.adapter.GroupDao;
 import com.protvino.splitwise.domain.request.EditGroupRequest;

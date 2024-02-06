@@ -17,4 +17,6 @@ public interface ParticipantDao {
     void delete(long id);
 
     Participant findById(Long id);
+
+    boolean checkForExists(long personId, long groupId);
 }

@@ -19,17 +19,17 @@ public abstract class ExpenseDaoTestCases {
     @Test
     void create__when_does_not_exist() {
         // Arrange
-        Long group_id = 123L;
-        Long paying_participant_id = 123L;
+        Long groupId = 123L;
+        Long paying_participantId = 123L;
         Double total = 234d;
         String comment = "Comment";
 
         // Act
-        long actualId = expenseDao.create(new EditExpenseRequest(group_id,paying_participant_id,total,comment));
+        long actualId = expenseDao.create(new EditExpenseRequest(groupId,paying_participantId,total,comment));
         Expense actualResult = expenseDao.findById(actualId);
 
         // Assert
-        Expense expectedResult = new Expense(actualId, group_id,paying_participant_id,total,comment);
+        Expense expectedResult = new Expense(actualId, groupId,paying_participantId,total,comment);
 
         assertThat(actualResult)
             .isEqualTo(expectedResult);
@@ -38,27 +38,27 @@ public abstract class ExpenseDaoTestCases {
     @Test
     void update__when_exists() {
         // Arrange
-        Long group_id = 123L;
-        Long paying_participant_id = 123L;
+        Long groupId = 123L;
+        Long paying_participantId = 123L;
         Double total = 234d;
         String comment = "Comment";
-        long actualId = expenseDao.create(new EditExpenseRequest(group_id,paying_participant_id,total,comment));
+        long actualId = expenseDao.create(new EditExpenseRequest(groupId,paying_participantId,total,comment));
 
         // Act
-        Long updateGroup_id = 123L;
-        Long updatePaying_participant_id = 123L;
+        Long updateGroupId = 123L;
+        Long updatePaying_participantId = 123L;
         Double updateTotal = 234d;
         String updateComment = "Comment";
-        expenseDao.update(actualId, new EditExpenseRequest(updateGroup_id
-            ,updatePaying_participant_id
+        expenseDao.update(actualId, new EditExpenseRequest(updateGroupId
+            ,updatePaying_participantId
             ,updateTotal
             ,updateComment));
 
         Expense actualResult = expenseDao.findById(actualId);
 
         // Assert
-        Expense expectedResult = new Expense(actualId, updateGroup_id
-            ,updatePaying_participant_id
+        Expense expectedResult = new Expense(actualId, updateGroupId
+            ,updatePaying_participantId
             ,updateTotal
             ,updateComment);
 
@@ -70,12 +70,12 @@ public abstract class ExpenseDaoTestCases {
     void update__when_does_not_exist() {
         // Arrange
         // Act
-        Long updateGroup_id = 123L;
-        Long updatePaying_participant_id = 123L;
+        Long updateGroupId = 123L;
+        Long updatePaying_participantId = 123L;
         Double updateTotal = 234d;
         String updateComment = "Comment";
-        expenseDao.update(666L, new EditExpenseRequest(updateGroup_id
-            ,updatePaying_participant_id
+        expenseDao.update(666L, new EditExpenseRequest(updateGroupId
+            ,updatePaying_participantId
             ,updateTotal
             ,updateComment));
 
@@ -87,32 +87,32 @@ public abstract class ExpenseDaoTestCases {
     }
 
     @Test
-    void find_by_id__when_exists() {
+    void find_byId__when_exists() {
         // Arrange
-        Long group_id = 123L;
-        Long paying_participant_id = 123L;
+        Long groupId = 123L;
+        Long paying_participantId = 123L;
         Double total = 234d;
         String comment = "Comment";
-        long actualId = expenseDao.create(new EditExpenseRequest(group_id,paying_participant_id,total,comment));
+        long actualId = expenseDao.create(new EditExpenseRequest(groupId,paying_participantId,total,comment));
 
         // Act
         Expense actualResult = expenseDao.findById(actualId);
 
         // Assert
-        Expense expectedResult = new Expense(actualId, group_id,paying_participant_id,total,comment);
+        Expense expectedResult = new Expense(actualId, groupId,paying_participantId,total,comment);
 
         assertThat(actualResult)
             .isEqualTo(expectedResult);
     }
 
     @Test
-    void find_by_id__when_does_not_exist() {
+    void find_byId__when_does_not_exist() {
         // Arrange
-        Long group_id = 123L;
-        Long paying_participant_id = 123L;
+        Long groupId = 123L;
+        Long paying_participantId = 123L;
         Double total = 234d;
         String comment = "Comment";
-        expenseDao.create(new EditExpenseRequest(group_id,paying_participant_id,total,comment));
+        expenseDao.create(new EditExpenseRequest(groupId,paying_participantId,total,comment));
 
         // Act
         Expense actualResult = expenseDao.findById(123L);

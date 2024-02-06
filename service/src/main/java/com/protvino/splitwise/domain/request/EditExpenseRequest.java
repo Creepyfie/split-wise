@@ -5,8 +5,8 @@ import lombok.Value;
 @Value
 public class EditExpenseRequest {
 
-    Long group_id;
-    Long paying_participant_id;
+    Long groupId;
+    Long paying_participantId;
     Double total;
     String comment;
 }
