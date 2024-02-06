@@ -19,13 +19,13 @@
             <column name="to_participant_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="amount" type="numeric" defaultValue="0" remarks="Сумма позиций в чеке для конкретного участника группы">
+                <constraints nullable="false"/>
+            </column>
             <column name="created" type="timestamp with timezone" remarks="Дата создания записи">
                 <constraints nullable="false"/>
             </column>
             <column name="updated" type="timestamp with timezone" remarks="Дата изменения записи">
-                <constraints nullable="false"/>
-            </column>
-            <column name="amount" type="numeric" defaultValue="0" remarks="Сумма позиций в чеке для конкретного участника группы">
                 <constraints nullable="false"/>
             </column>
         </createTable>
