@@ -5,7 +5,7 @@ import com.protvino.splitwise.domain.value.DebtInExpense;
 
 import java.util.List;
 
-public interface Debt_in_expenseDao {
+public interface DebtInExpenseDao {
 
     void create(EditDebtInExpenseRequest request);
 
@@ -13,5 +13,5 @@ public interface Debt_in_expenseDao {
 
     void delete(EditDebtInExpenseRequest request);
 
-    List<DebtInExpense> findByExpense_id(Long expense_id);
+    List<DebtInExpense> findByExpenseId(Long expenseId);
 }

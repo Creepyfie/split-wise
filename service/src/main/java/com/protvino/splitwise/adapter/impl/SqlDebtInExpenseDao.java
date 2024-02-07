@@ -1,6 +1,6 @@
 package com.protvino.splitwise.adapter.impl;
 
-import com.protvino.splitwise.adapter.Debt_in_expenseDao;
+import com.protvino.splitwise.adapter.DebtInExpenseDao;
 import com.protvino.splitwise.domain.request.EditDebtInExpenseRequest;
 import com.protvino.splitwise.domain.value.DebtInExpense;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +18,11 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
+public class SqlDebtInExpenseDao implements DebtInExpenseDao {
 
     private final NamedParameterJdbcOperations jdbc;
 
-    private final RowMapper<DebtInExpense> rowMapper = new Debt_in_expenseRowMapper();
+    private final RowMapper<DebtInExpense> rowMapper = new DebtInExpenseRowMapper();
 
     @Override
     public void create(EditDebtInExpenseRequest request) {
@@ -30,9 +30,9 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
         Timestamp now = Timestamp.from(Instant.now());
 
         SqlParameterSource params = new MapSqlParameterSource()
-            .addValue("expense_id", request.getExpense_id())
-            .addValue("from", request.getFrom_participant_id())
-            .addValue("to", request.getTo_participant_id())
+            .addValue("expense_id", request.getExpenseId())
+            .addValue("from", request.getFromParticipantId())
+            .addValue("to", request.getToParticipantId())
             .addValue("amount", request.getAmount())
             .addValue("created", now)
             .addValue("updated", now);
@@ -51,9 +51,9 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
         Timestamp now = Timestamp.from(Instant.now());
 
         SqlParameterSource params = new MapSqlParameterSource()
-            .addValue("expense_id", request.getExpense_id())
-            .addValue("from", request.getFrom_participant_id())
-            .addValue("to", request.getTo_participant_id())
+            .addValue("expense_id", request.getExpenseId())
+            .addValue("from", request.getFromParticipantId())
+            .addValue("to", request.getToParticipantId())
             .addValue("amount", request.getAmount())
             .addValue("updated", now);
 
@@ -71,9 +71,9 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
     public void delete(EditDebtInExpenseRequest request) {
 
         SqlParameterSource params = new MapSqlParameterSource()
-            .addValue("expense_id", request.getExpense_id())
-            .addValue("from", request.getFrom_participant_id())
-            .addValue("to", request.getTo_participant_id());
+            .addValue("expense_id", request.getExpenseId())
+            .addValue("from", request.getFromParticipantId())
+            .addValue("to", request.getToParticipantId());
 
         String sql = """
             DELETE FROM debt_in_expense
@@ -84,10 +84,10 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
     }
 
     @Override
-    public List<DebtInExpense> findByExpense_id(Long expense_id) {
+    public List<DebtInExpense> findByExpenseId(Long expenseId) {
 
         SqlParameterSource params = new MapSqlParameterSource()
-            .addValue("expense_id", expense_id);
+            .addValue("expense_id", expenseId);
 
         String sql = """
             SELECT FROM debt_in_expense
@@ -99,7 +99,7 @@ public class SqlDebt_in_expenseDao implements Debt_in_expenseDao {
         return !debts.isEmpty() ? debts : null;
     }
 
-    static class Debt_in_expenseRowMapper implements RowMapper<DebtInExpense> {
+    static class DebtInExpenseRowMapper implements RowMapper<DebtInExpense> {
         @Override
         public DebtInExpense mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new DebtInExpense(
