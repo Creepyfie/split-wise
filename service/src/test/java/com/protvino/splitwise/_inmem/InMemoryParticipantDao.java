@@ -33,7 +33,7 @@ public class InMemoryParticipantDao implements ParticipantDao {
     @Override
     public void delete(EditParticipantRequest editParticipantRequest) {
         for(Map.Entry<Long, Participant> participant: rows.entrySet()){
-            if (participant.getValue().getGroup_id() == editParticipantRequest.getGroupId()){
+            if (participant.getValue().getGroupId() == editParticipantRequest.getGroupId()){
                 rows.remove(participant.getKey());
             }
         }

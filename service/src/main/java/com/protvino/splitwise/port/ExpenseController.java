@@ -46,7 +46,7 @@ public class ExpenseController {
         ExpenseDto expense = ExpenseDto.builder()
             .id(ThreadLocalRandom.current().nextLong())
             .groupId(ThreadLocalRandom.current().nextLong())
-            .paying_participant_id(ThreadLocalRandom.current().nextLong())
+            .payingParticipantId(ThreadLocalRandom.current().nextLong())
             .total(ThreadLocalRandom.current().nextDouble())
             .comment("Comment" + ThreadLocalRandom.current().nextInt(1000))
             .build();

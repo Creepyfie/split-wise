@@ -9,7 +9,7 @@ public class ExpenseDto {
 
     Long id;
     Long groupId;
-    Long paying_participantId;
+    Long payingParticipantId;
     Double total;
     String comment;
 }

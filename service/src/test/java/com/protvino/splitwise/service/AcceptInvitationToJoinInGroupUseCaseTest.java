@@ -3,19 +3,16 @@ package com.protvino.splitwise.service;
 import com.protvino.splitwise._inmem.InMemoryGroupDao;
 import com.protvino.splitwise._inmem.InMemoryParticipantDao;
 import com.protvino.splitwise._inmem.InMemoryPersonDao;
-import com.protvino.splitwise.domain._data.EditGroupRequests;
-import com.protvino.splitwise.domain._data.EditPersonRequests;
-import com.protvino.splitwise.domain.request.EditGroupRequest;
-import com.protvino.splitwise.domain.request.EditPersonRequest;
 import com.protvino.splitwise.domain.value.Participant;
-import org.assertj.core.api.Assertions;
-import org.instancio.Instancio;
+import com.protvino.splitwise.exceptions.ParticipantAlreadyExistsException;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static com.protvino.splitwise.domain._data.EditGroupRequests.aGroup;
 import static com.protvino.splitwise.domain._data.EditPersonRequests.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 @Tag("UNIT")
 class AcceptInvitationToJoinInGroupUseCaseTest {
@@ -30,7 +27,20 @@ class AcceptInvitationToJoinInGroupUseCaseTest {
     void create_err__when_has_already_participated() {
         // Arrange
         long groupId = groupDao.create(aGroup());
-        Long personId = personDao.create(aPerson());
+        long personId = personDao.create(aPerson());
+
+        // Act
+        ParticipantAlreadyExistsException exception = assertThrows(ParticipantAlreadyExistsException.class,() -> acceptInvitationToJoinInGroupUseCase.acceptInvitation(personId, groupId));
+        long participantId = acceptInvitationToJoinInGroupUseCase.acceptInvitation(personId, groupId);
+        String expectedMessage = "already exist";
+        // Assert
+        assertTrue(expectedMessage.contains(exception.getMessage()));
+    }
+    @Test
+    void create_err__when_has_no_already_participated() {
+        // Arrange
+        long groupId = groupDao.create(aGroup());
+        long personId = personDao.create(aPerson());
 
         // Act
         long participantId = acceptInvitationToJoinInGroupUseCase.acceptInvitation(personId, groupId);
@@ -38,6 +48,6 @@ class AcceptInvitationToJoinInGroupUseCaseTest {
         // Assert
         Participant expectedParticipant = participantDao.findById(participantId);
         assertThat(expectedParticipant)
-            .isEqualTo(new Participant())
+            .isEqualTo(new Participant(participantId,personId, groupId));
     }
 }

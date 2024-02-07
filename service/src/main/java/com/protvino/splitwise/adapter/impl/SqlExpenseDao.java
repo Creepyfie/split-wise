@@ -32,8 +32,8 @@ public class SqlExpenseDao implements ExpenseDao {
         Timestamp now = Timestamp.from(Instant.now());
 
         SqlParameterSource params = new MapSqlParameterSource()
-            .addValue("group_id", editExpenseRequest.getGroup_id())
-            .addValue("paying_participant_id", editExpenseRequest.getPaying_participant_id())
+            .addValue("group_id", editExpenseRequest.getGroupId())
+            .addValue("paying_participant_id", editExpenseRequest.getPayingParticipantId())
             .addValue("total", editExpenseRequest.getTotal())
             .addValue("comment", editExpenseRequest.getComment())
             .addValue("created", now)
@@ -58,8 +58,8 @@ public class SqlExpenseDao implements ExpenseDao {
 
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("id", id)
-            .addValue("group_id", editExpenseRequest.getGroup_id())
-            .addValue("paying_participant_id", editExpenseRequest.getPaying_participant_id())
+            .addValue("group_id", editExpenseRequest.getGroupId())
+            .addValue("paying_participant_id", editExpenseRequest.getPayingParticipantId())
             .addValue("total", editExpenseRequest.getTotal())
             .addValue("comment", editExpenseRequest.getComment())
             .addValue("updated", now);
@@ -93,14 +93,14 @@ public class SqlExpenseDao implements ExpenseDao {
     }
 
     @Override
-    public List<Expense> findByGroup_id(long group_id) {
+    public List<Expense> findByGroupId(long groupId) {
 
         SqlParameterSource params = new MapSqlParameterSource()
-            .addValue("group_id", group_id);
+            .addValue("group_id", groupId);
 
         String sql = """
             SELECT FROM expenses
-            WHERE group_id = :group_id
+            WHERE group_id = :groupId
             """;
 
         List<Expense> result= jdbc.query(sql,params,rowMapper);
