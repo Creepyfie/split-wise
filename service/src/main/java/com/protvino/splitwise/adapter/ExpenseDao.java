@@ -13,5 +13,5 @@ public interface ExpenseDao {
 
     Expense findById(long id);
 
-    List<Expense> findByGroup_id(long group_id);
+    List<Expense> findByGroupId(long groupId);
 }

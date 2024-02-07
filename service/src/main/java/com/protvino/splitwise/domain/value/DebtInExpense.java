@@ -6,7 +6,7 @@ import lombok.Value;
 public class DebtInExpense {
 
     Long expenseId;
-    Long from_participantId;
-    Long to_participantId;
+    Long fromParticipantId;
+    Long toParticipantId;
     Double amount;
 }
