@@ -6,7 +6,6 @@ import lombok.Value;
 public class Expense {
 
     Long id;
-    Long groupId;
     Long paying_participantId;
     Double total;
     String comment;
