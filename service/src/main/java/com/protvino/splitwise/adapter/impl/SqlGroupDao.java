@@ -30,18 +30,18 @@ public class SqlGroupDao implements GroupDao {
         Timestamp now = Timestamp.from(Instant.now());
 
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("name", request.getName())
-                .addValue("created", now)
-                .addValue("updated", now);
+            .addValue("name", request.getName())
+            .addValue("created", now)
+            .addValue("updated", now);
 
         String sql = """
-                INSERT INTO groups(name, created, updated)
-                VALUES (:name, :created, :updated)
-                RETURNING id
-                """;
+            INSERT INTO groups(name, created, updated)
+            VALUES (:name, :created, :updated)
+            RETURNING id
+            """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbc.update(sql,params,keyHolder);
+        jdbc.update(sql, params, keyHolder);
         return keyHolder.getKeyAs(Long.class);
     }
 
@@ -50,15 +50,15 @@ public class SqlGroupDao implements GroupDao {
         Timestamp now = Timestamp.from(Instant.now());
 
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", id)
-                .addValue("name", request.getName())
-                .addValue("updated", now);
+            .addValue("id", id)
+            .addValue("name", request.getName())
+            .addValue("updated", now);
 
         String sql = """
-                UPDATE groups
-                SET name = :name, updated = :updated
-                WHERE id = :id
-                """;
+            UPDATE groups
+            SET name = :name, updated = :updated
+            WHERE id = :id
+            """;
 
         jdbc.update(sql, params);
     }
@@ -67,27 +67,27 @@ public class SqlGroupDao implements GroupDao {
     public void delete(Long id) {
 
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", id);
+            .addValue("id", id);
 
         String sql = """
-                DELETE FROM groups
-                Where id = :id
-                """;
+            DELETE FROM groups
+            Where id = :id
+            """;
 
-        jdbc.update(sql,params);
+        jdbc.update(sql, params);
     }
 
     @Override
     public Group findById(Long id) {
 
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", id);
+            .addValue("id", id);
 
         String sql = """
-                SELECT FROM gorups
-                WHERE id = :id
-                """;
-        List<Group> results= jdbc.query(sql,params,groupRowMapper);
+            SELECT FROM gorups
+            WHERE id = :id
+            """;
+        List<Group> results = jdbc.query(sql, params, groupRowMapper);
         return !results.isEmpty() ? results.get(0) : null;
     }
 
@@ -95,8 +95,8 @@ public class SqlGroupDao implements GroupDao {
         @Override
         public Group mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Group(
-                    rs.getLong("id"),
-                    rs.getString("name")
+                rs.getLong("id"),
+                rs.getString("name")
             );
         }
     }

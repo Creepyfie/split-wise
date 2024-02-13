@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SqlExpenseDao implements ExpenseDao {
 
-    private  final NamedParameterJdbcOperations jdbc;
+    private final NamedParameterJdbcOperations jdbc;
 
     private final RowMapper<Expense> rowMapper = new ExpenseRowMapper();
 
@@ -46,7 +46,7 @@ public class SqlExpenseDao implements ExpenseDao {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbc.update(sql,params,keyHolder);
+        jdbc.update(sql, params, keyHolder);
         return keyHolder.getKeyAs(Long.class);
     }
 
@@ -71,7 +71,7 @@ public class SqlExpenseDao implements ExpenseDao {
             WHERE id = :id
             """;
 
-        jdbc.update(sql,params);
+        jdbc.update(sql, params);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class SqlExpenseDao implements ExpenseDao {
             WHERE id = :id
             """;
 
-        List<Expense> result = jdbc.query(sql,params,rowMapper);
+        List<Expense> result = jdbc.query(sql, params, rowMapper);
         return !result.isEmpty() ? result.get(0) : null;
     }
 

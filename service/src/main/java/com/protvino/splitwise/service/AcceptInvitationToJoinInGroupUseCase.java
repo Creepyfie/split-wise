@@ -18,7 +18,6 @@ public class AcceptInvitationToJoinInGroupUseCase {
         // Дописать тесты на этот метод
         if (!participantDao.checkForExists(personId, groupId)) {
             return participantDao.create(new EditParticipantRequest(personId, groupId));
-        }
-        else throw new ParticipantAlreadyExistsException("already exist");
+        } else throw new ParticipantAlreadyExistsException("already exist");
     }
 }

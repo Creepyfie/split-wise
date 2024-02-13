@@ -42,7 +42,7 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
             VALUES (:expense_id, :from, :to, :amount, :created,:updated)
             """;
 
-        jdbc.update(sql,params);
+        jdbc.update(sql, params);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
             WHERE expense_id = :expense_id AND from_participant_id = :from AND to_participant_id = :to
             """;
 
-        jdbc.update(sql,params);
+        jdbc.update(sql, params);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
             WHERE expense_id = :expense_id AND from_participant_id = :from AND to_participant_id = :to
             """;
 
-        jdbc.update(sql,params);
+        jdbc.update(sql, params);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
             WHERE expense_id = :expense_id
             """;
 
-        List<DebtInExpense> debts = jdbc.query(sql,params,rowMapper);
+        List<DebtInExpense> debts = jdbc.query(sql, params, rowMapper);
 
         return !debts.isEmpty() ? debts : null;
     }

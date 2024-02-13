@@ -1,10 +1,6 @@
 package com.protvino.splitwise.port;
 
-import com.protvino.splitwise.adapter.impl.SqlExpenseDao;
-import com.protvino.splitwise.domain.value.Expense;
 import com.protvino.splitwise.port.dto.ExpenseDto;
-import com.protvino.splitwise.port.dto.GroupDto;
-import com.protvino.splitwise.port.dto.PersonDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,18 +20,18 @@ public class ExpenseController {
     Map<Long, ExpenseDto> expenses = new HashMap<>();
 
     @GetMapping("/{id}")
-    public ExpenseDto getExpense(@PathVariable("id") long id){
+    public ExpenseDto getExpense(@PathVariable("id") long id) {
         return expenses.get(id);
     }
 
     @GetMapping("/group/{group_id}")
-    public List<ExpenseDto> getGroupExpenses(@PathVariable long group_id){
+    public List<ExpenseDto> getGroupExpenses(@PathVariable long group_id) {
 
         List<ExpenseDto> result = new ArrayList<>();
 
-        for(Map.Entry<Long,ExpenseDto> entry: expenses.entrySet()) {
+        for (Map.Entry<Long, ExpenseDto> entry : expenses.entrySet()) {
             ExpenseDto expense = entry.getValue();
-            if(expense.getGroupId() == group_id)
+            if (expense.getGroupId() == group_id)
                 result.add(expense);
         }
         return result;

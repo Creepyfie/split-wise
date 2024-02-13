@@ -1,11 +1,8 @@
 package com.protvino.splitwise.adapter.impl;
 
 import com.protvino.splitwise.adapter.ExpenseDao;
-import com.protvino.splitwise.adapter.PersonDao;
 import com.protvino.splitwise.domain.request.EditExpenseRequest;
-import com.protvino.splitwise.domain.request.EditPersonRequest;
 import com.protvino.splitwise.domain.value.Expense;
-import com.protvino.splitwise.domain.value.Person;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,11 +22,11 @@ public abstract class ExpenseDaoTestCases {
         String comment = "Comment";
 
         // Act
-        long actualId = expenseDao.create(new EditExpenseRequest(groupId,paying_participantId,total,comment));
+        long actualId = expenseDao.create(new EditExpenseRequest(paying_participantId,total,comment));
         Expense actualResult = expenseDao.findById(actualId);
 
         // Assert
-        Expense expectedResult = new Expense(actualId, groupId,paying_participantId,total,comment);
+        Expense expectedResult = new Expense(actualId, paying_participantId,total,comment);
 
         assertThat(actualResult)
             .isEqualTo(expectedResult);
@@ -42,22 +39,20 @@ public abstract class ExpenseDaoTestCases {
         Long paying_participantId = 123L;
         Double total = 234d;
         String comment = "Comment";
-        long actualId = expenseDao.create(new EditExpenseRequest(groupId,paying_participantId,total,comment));
+        long actualId = expenseDao.create(new EditExpenseRequest(paying_participantId,total,comment));
 
         // Act
-        Long updateGroupId = 123L;
         Long updatePaying_participantId = 123L;
         Double updateTotal = 234d;
         String updateComment = "Comment";
-        expenseDao.update(actualId, new EditExpenseRequest(updateGroupId
-            ,updatePaying_participantId
+        expenseDao.update(actualId, new EditExpenseRequest(updatePaying_participantId
             ,updateTotal
             ,updateComment));
 
         Expense actualResult = expenseDao.findById(actualId);
 
         // Assert
-        Expense expectedResult = new Expense(actualId, updateGroupId
+        Expense expectedResult = new Expense(actualId
             ,updatePaying_participantId
             ,updateTotal
             ,updateComment);
@@ -70,12 +65,10 @@ public abstract class ExpenseDaoTestCases {
     void update__when_does_not_exist() {
         // Arrange
         // Act
-        Long updateGroupId = 123L;
         Long updatePaying_participantId = 123L;
         Double updateTotal = 234d;
         String updateComment = "Comment";
-        expenseDao.update(666L, new EditExpenseRequest(updateGroupId
-            ,updatePaying_participantId
+        expenseDao.update(666L, new EditExpenseRequest(updatePaying_participantId
             ,updateTotal
             ,updateComment));
 
@@ -93,13 +86,13 @@ public abstract class ExpenseDaoTestCases {
         Long paying_participantId = 123L;
         Double total = 234d;
         String comment = "Comment";
-        long actualId = expenseDao.create(new EditExpenseRequest(groupId,paying_participantId,total,comment));
+        long actualId = expenseDao.create(new EditExpenseRequest(paying_participantId,total,comment));
 
         // Act
         Expense actualResult = expenseDao.findById(actualId);
 
         // Assert
-        Expense expectedResult = new Expense(actualId, groupId,paying_participantId,total,comment);
+        Expense expectedResult = new Expense(actualId, paying_participantId,total,comment);
 
         assertThat(actualResult)
             .isEqualTo(expectedResult);
@@ -112,7 +105,7 @@ public abstract class ExpenseDaoTestCases {
         Long paying_participantId = 123L;
         Double total = 234d;
         String comment = "Comment";
-        expenseDao.create(new EditExpenseRequest(groupId,paying_participantId,total,comment));
+        expenseDao.create(new EditExpenseRequest(paying_participantId,total,comment));
 
         // Act
         Expense actualResult = expenseDao.findById(123L);
