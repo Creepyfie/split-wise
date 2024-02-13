@@ -14,16 +14,17 @@ public class GroupController {
     Map<Long, GroupDto> groups = new HashMap<>();
 
     @GetMapping("/{id}")
-    public GroupDto getGroup(@PathVariable Long id){return groups.get(id);}
+    public GroupDto getGroup(@PathVariable Long id) {
+        return groups.get(id);
+    }
 
     @PostMapping
-    public Long createGroup()
-    {
+    public Long createGroup() {
         GroupDto groupDto = GroupDto.builder()
-                .id(ThreadLocalRandom.current().nextLong())
-                .name("groupName_" + ThreadLocalRandom.current().nextInt(1000))
-                .build();
-        groups.put(groupDto.getId(),groupDto);
+            .id(ThreadLocalRandom.current().nextLong())
+            .name("groupName_" + ThreadLocalRandom.current().nextInt(1000))
+            .build();
+        groups.put(groupDto.getId(), groupDto);
         return groupDto.getId();
     }
 
