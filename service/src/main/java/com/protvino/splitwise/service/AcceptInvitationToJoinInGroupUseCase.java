@@ -16,8 +16,11 @@ public class AcceptInvitationToJoinInGroupUseCase {
         // Проверить, что участник ещё не участвует, иначе бросить throw new Accept...Exception(), почитать про аннотации @ExceptionHandlers, @ResponseStatus(), отдать 409 статус в контроллере
         // Если всё ок, создаём участника
         // Дописать тесты на этот метод
-        if (!participantDao.checkForExists(personId, groupId)) {
+        boolean participantNotExists = participantDao.checkIfNotExists(personId, groupId);
+        if (participantNotExists) {
             return participantDao.create(new EditParticipantRequest(personId, groupId));
-        } else throw new ParticipantAlreadyExistsException("already exist");
+        } else {
+            throw new ParticipantAlreadyExistsException("already exist");
+        }
     }
 }

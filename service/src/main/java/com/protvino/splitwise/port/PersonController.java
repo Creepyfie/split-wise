@@ -1,5 +1,6 @@
 package com.protvino.splitwise.port;
 
+import com.protvino.splitwise.domain.value.Person;
 import com.protvino.splitwise.port.dto.PersonDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PersonController {
 
     Map<Long, PersonDto> persons = new HashMap<>();
+    {
+        persons.put(1L,new PersonDto(1L,"Anton","Krutov"));
+    }
 
     @GetMapping("/{id}")
     public PersonDto getPerson(@PathVariable Long id) {

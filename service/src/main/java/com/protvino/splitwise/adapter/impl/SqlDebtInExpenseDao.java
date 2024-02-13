@@ -68,6 +68,16 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
     }
 
     @Override
+    public void update(List<EditDebtInExpenseRequest> requests) {
+
+        Timestamp now = Timestamp.from(Instant.now());
+
+
+
+
+    }
+
+    @Override
     public void delete(EditDebtInExpenseRequest request) {
 
         SqlParameterSource params = new MapSqlParameterSource()
