@@ -11,6 +11,8 @@ public interface DebtInExpenseDao {
 
     void update(EditDebtInExpenseRequest request);
 
+    void update(List<EditDebtInExpenseRequest> requests);
+
     void delete(EditDebtInExpenseRequest request);
 
     List<DebtInExpense> findByExpenseId(Long expenseId);

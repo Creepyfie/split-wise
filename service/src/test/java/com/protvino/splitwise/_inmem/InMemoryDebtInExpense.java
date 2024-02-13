@@ -18,7 +18,7 @@ public class InMemoryDebtInExpense implements DebtInExpenseDao {
     @Override
     public void create(EditDebtInExpenseRequest request) {
 
-        long id = 1l;
+        long id = ThreadLocalRandom.current().nextLong(0, 100000);
 
         debts.put(id,new DebtInExpense(request.getExpenseId(), request.getFromParticipantId()
         , request.getToParticipantId(), request.getAmount()));
@@ -27,10 +27,16 @@ public class InMemoryDebtInExpense implements DebtInExpenseDao {
     @Override
     public void update(EditDebtInExpenseRequest request) {
 
+
         if(debts.containsKey(1l)){
             debts.put(1l,new DebtInExpense(request.getExpenseId(), request.getFromParticipantId()
                     , request.getToParticipantId(), request.getAmount()));
         }
+    }
+
+    @Override
+    public void update(List<EditDebtInExpenseRequest> requests) {
+
     }
 
     @Override

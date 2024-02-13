@@ -50,10 +50,10 @@ public class InMemoryParticipantDao implements ParticipantDao {
     }
 
     @Override
-    public boolean checkForExists(long personId, long groupId) {
+    public boolean checkIfNotExists(long personId, long groupId) {
         return rows.values()
             .stream()
-            .anyMatch(it -> it.getGroupId() == groupId && it.getPersonId() == personId);
+            .noneMatch(it -> it.getGroupId() == groupId && it.getPersonId() == personId);
     }
 
     public void clear(){rows.clear();}

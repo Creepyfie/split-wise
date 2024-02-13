@@ -115,7 +115,8 @@ public class SqlParticipantDao implements ParticipantDao {
     }
 
     @Override
-    public boolean checkForExists(long personId, long groupId) {
+    public boolean checkIfNotExists(long personId, long groupId) {
+
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("personId", personId)
             .addValue("groupId", groupId);
@@ -125,7 +126,7 @@ public class SqlParticipantDao implements ParticipantDao {
               SELECT 1 FROM participants
               WHERE person_id = :personId AND group_id = :groupId
             )""";
-        return jdbc.query(sql, params, (rs, i) -> rs.getBoolean(1)).get(0);
+        return !jdbc.query(sql, params, (rs, i) -> rs.getBoolean(1)).get(0);
     }
 
     static class ParticipantRowMapper implements RowMapper<Participant> {

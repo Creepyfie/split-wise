@@ -18,5 +18,5 @@ public interface ParticipantDao {
 
     Participant findById(Long id);
 
-    boolean checkForExists(long personId, long groupId);
+    boolean checkIfNotExists(long personId, long groupId);
 }
