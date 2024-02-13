@@ -32,7 +32,6 @@ public class SqlExpenseDao implements ExpenseDao {
         Timestamp now = Timestamp.from(Instant.now());
 
         SqlParameterSource params = new MapSqlParameterSource()
-            .addValue("group_id", editExpenseRequest.getGroupId())
             .addValue("paying_participant_id", editExpenseRequest.getPayingParticipantId())
             .addValue("total", editExpenseRequest.getTotal())
             .addValue("comment", editExpenseRequest.getComment())
@@ -40,8 +39,8 @@ public class SqlExpenseDao implements ExpenseDao {
             .addValue("updated", now);
 
         String sql = """
-            INSERT INTO expenses(group_id, paying_participant_id, total, comment, created, updated)
-            VALUES (:group_id, :paying_participant_id, :total, :comment, :created, : updated)
+            INSERT INTO expenses(paying_participant_id, total, comment, created, updated)
+            VALUES (:paying_participant_id, :total, :comment, :created, : updated)
             RETURNING id
             """;
 
@@ -58,7 +57,6 @@ public class SqlExpenseDao implements ExpenseDao {
 
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("id", id)
-            .addValue("group_id", editExpenseRequest.getGroupId())
             .addValue("paying_participant_id", editExpenseRequest.getPayingParticipantId())
             .addValue("total", editExpenseRequest.getTotal())
             .addValue("comment", editExpenseRequest.getComment())
@@ -66,8 +64,7 @@ public class SqlExpenseDao implements ExpenseDao {
 
         String sql = """
             UPDATE expenses
-            SET group_id = :group_id,
-                paying_participant_id = :paying_participant_id,
+            SET paying_participant_id = :paying_participant_id,
                 total = :total,
                 comment = :comment,
                 updated = :updated
@@ -92,28 +89,11 @@ public class SqlExpenseDao implements ExpenseDao {
         return !result.isEmpty() ? result.get(0) : null;
     }
 
-    @Override
-    public List<Expense> findByGroupId(long groupId) {
-
-        SqlParameterSource params = new MapSqlParameterSource()
-            .addValue("group_id", groupId);
-
-        String sql = """
-            SELECT FROM expenses
-            WHERE group_id = :groupId
-            """;
-
-        List<Expense> result= jdbc.query(sql,params,rowMapper);
-        return !result.isEmpty() ? result : null;
-    }
-
-
     static class ExpenseRowMapper implements RowMapper<Expense> {
         @Override
         public Expense mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Expense(
                 rs.getLong("id"),
-                rs.getLong("group_id"),
                 rs.getLong("paying_participant_id"),
                 rs.getDouble("total"),
                 rs.getString("comment")
