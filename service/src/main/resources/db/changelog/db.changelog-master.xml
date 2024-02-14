@@ -7,4 +7,5 @@
     <include file="20240108_participants.xml" relativeToChangelogFile="true"/>
     <include file="20240108_expenses.xml" relativeToChangelogFile="true"/>
     <include file="20240108_debt_in_expense.xml" relativeToChangelogFile="true"/>
+    <include file="20240214_users.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
