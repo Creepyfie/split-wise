@@ -20,6 +20,12 @@
             <column name="password" type="text">
                 <constraints nullable="false"/>
             </column>
+            <column name="created" type="timestamp with timezone" remarks="Дата создания записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated" type="timestamp with timezone" remarks="Дата изменения записи">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>
