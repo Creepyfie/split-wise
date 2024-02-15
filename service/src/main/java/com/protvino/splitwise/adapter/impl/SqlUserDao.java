@@ -64,7 +64,7 @@ public class SqlUserDao implements UserDao {
                 .addValue("updated", now);
 
         String sql = """
-                UPDATE Users 
+                UPDATE Users
                 SET user_name = :userName, password :password, updated= updated
                 WHERE id = :id
                 """;
@@ -79,7 +79,7 @@ public class SqlUserDao implements UserDao {
                 .addValue("userName", userName);
 
         String sql = """
-                SELECT FROM Users 
+                SELECT * FROM Users
                 WHERE user_name = :userName
                 """;
 
