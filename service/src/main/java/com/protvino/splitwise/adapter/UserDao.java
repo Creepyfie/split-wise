@@ -10,4 +10,6 @@ public interface UserDao {
     void update(long id, EditUserRequest request);
 
     User findByUserName(String userName);
+
+    boolean checkIfNoExists(String userName);
 }
