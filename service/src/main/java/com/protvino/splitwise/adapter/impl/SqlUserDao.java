@@ -87,6 +87,19 @@ public class SqlUserDao implements UserDao {
         return !users.isEmpty() ? users.get(0) : null ;
     }
 
+    @Override
+    public boolean checkIfNoExists(String userName) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("userName", userName);
+
+        String sql = """
+            SELECT EXISTS FROM (
+              SELECT 1 FROM users
+              WHERE user_name = :userName
+            )""";
+        return !jdbc.query(sql, params, (rs, i) -> rs.getBoolean(1)).get(0);
+    }
+
     static class UserRowMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {

@@ -14,13 +14,16 @@ public class InMemoryPersonDao implements PersonDao {
 
     @Override
     public long create(EditPersonRequest request) {
+
         long id = ThreadLocalRandom.current().nextLong(0, 100000);
+
         rows.put(id, new Person(id, request.getFirstName(), request.getLastName()));
         return id;
     }
 
     @Override
     public void update(Long id, EditPersonRequest request) {
+
         if (rows.containsKey(id)) {
             Person updatePerson = new Person(id, request.getFirstName(), request.getLastName());
             rows.put(id, updatePerson);

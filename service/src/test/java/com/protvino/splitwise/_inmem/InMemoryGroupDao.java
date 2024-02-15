@@ -14,13 +14,16 @@ public class InMemoryGroupDao  implements GroupDao {
 
     @Override
     public long create(EditGroupRequest editGroupRequest) {
+
         long id = ThreadLocalRandom.current().nextLong(0, 100000);
+
         rows.put(id, new Group(id, editGroupRequest.getName()));
         return id;
     }
 
     @Override
     public void update(Long id, EditGroupRequest editGroupRequest) {
+
         if (rows.containsKey(id)) {
             rows.put(id, new Group(id, editGroupRequest.getName()));
         }

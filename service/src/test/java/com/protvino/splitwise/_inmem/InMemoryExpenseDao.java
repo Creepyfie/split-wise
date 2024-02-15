@@ -14,7 +14,9 @@ public class InMemoryExpenseDao implements ExpenseDao {
 
     @Override
     public long create(EditExpenseRequest editExpenseRequest) {
+
         long id = ThreadLocalRandom.current().nextLong(0, 100000);
+
         expenses.put(id, new Expense(id, editExpenseRequest.getPayingParticipantId(),
             editExpenseRequest.getTotal(),
             editExpenseRequest.getComment()));

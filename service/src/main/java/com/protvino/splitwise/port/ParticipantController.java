@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/participant")
 @RequiredArgsConstructor
-public class ParticipantController {
+public class  ParticipantController {
 
     private final SqlParticipantDao sqlParticipantDao;
     private final AcceptInvitationToJoinInGroupUseCase aCase;
