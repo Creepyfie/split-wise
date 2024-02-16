@@ -1,5 +1,6 @@
 package com.protvino.splitwise.service.impl;
 
+import com.protvino.splitwise.adapter.UserDao;
 import com.protvino.splitwise.adapter.impl.SqlUserDao;
 import com.protvino.splitwise.domain.request.EditUserRequest;
 import com.protvino.splitwise.port.dto.UserDto;
@@ -15,7 +16,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
-    private final SqlUserDao userDao;
+    private final UserDao userDao;
 
     @Override
     public void saveUser(UserDto userDto) {
