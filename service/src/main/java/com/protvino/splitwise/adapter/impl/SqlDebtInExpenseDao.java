@@ -39,8 +39,7 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
 
         String sql = """
             INSERT INTO debt_in_expense(expense_id, from_participant_id, to_participant_id, amount, created, updated)
-            VALUES (:expense_id, :from, :to, :amount, :created,:updated)
-            """;
+            VALUES (:expense_id, :from, :to, :amount, :created,:updated)""";
 
         jdbc.update(sql, params);
     }
@@ -61,8 +60,7 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
             UPDATE debt_in_expense
             SET amount = :amount,
                 updated = :updated
-            WHERE expense_id = :expense_id AND from_participant_id = :from AND to_participant_id = :to
-            """;
+            WHERE expense_id = :expense_id AND from_participant_id = :from AND to_participant_id = :to""";
 
         jdbc.update(sql, params);
     }
@@ -71,10 +69,7 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
     public void update(List<EditDebtInExpenseRequest> requests) {
 
         Timestamp now = Timestamp.from(Instant.now());
-
-
-
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -87,8 +82,7 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
 
         String sql = """
             DELETE FROM debt_in_expense
-            WHERE expense_id = :expense_id AND from_participant_id = :from AND to_participant_id = :to
-            """;
+            WHERE expense_id = :expense_id AND from_participant_id = :from AND to_participant_id = :to""";
 
         jdbc.update(sql, params);
     }
@@ -101,12 +95,11 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
 
         String sql = """
             SELECT FROM debt_in_expense
-            WHERE expense_id = :expense_id
-            """;
+            WHERE expense_id = :expense_id""";
 
         List<DebtInExpense> debts = jdbc.query(sql, params, rowMapper);
 
-        return !debts.isEmpty() ? debts : null;
+        return debts;
     }
 
     static class DebtInExpenseRowMapper implements RowMapper<DebtInExpense> {

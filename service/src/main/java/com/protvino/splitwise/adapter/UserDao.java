@@ -11,5 +11,5 @@ public interface UserDao {
 
     User findByUserName(String userName);
 
-    boolean checkIfNoExists(String userName);
+    boolean checkIfExists(String userName);
 }

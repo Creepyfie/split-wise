@@ -16,7 +16,7 @@ public class AcceptRegistrationInAppCase {
 
     public void acceptRegistration(String userName, String password) {
 
-        boolean userExists = userDao.checkIfNoExists(userName);
+        boolean userExists = userDao.checkIfExists(userName);
         if (userExists) {
             userService.saveUser(new UserDto(0l, userName,password));
         } else {

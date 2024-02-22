@@ -7,5 +7,4 @@ public class EditUserRequest {
 
     String userName;
     String password;
-
 }

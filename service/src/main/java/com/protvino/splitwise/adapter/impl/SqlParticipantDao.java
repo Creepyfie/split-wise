@@ -115,7 +115,7 @@ public class SqlParticipantDao implements ParticipantDao {
     }
 
     @Override
-    public boolean checkIfNotExists(long personId, long groupId) {
+    public boolean checkIfExists(long personId, long groupId) {
 
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("personId", personId)

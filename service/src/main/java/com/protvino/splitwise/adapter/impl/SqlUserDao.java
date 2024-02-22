@@ -25,8 +25,6 @@ public class SqlUserDao implements UserDao {
     private final NamedParameterJdbcOperations jdbc;
     private final RowMapper<User> rowMapper = new UserRowMapper();
 
-
-
     @Override
     public long create(EditUserRequest request) {
 
@@ -41,13 +39,11 @@ public class SqlUserDao implements UserDao {
         String sql = """
                 INSERT INTO Users (user_name, password, created, updated)
                 VALUES (:userName, :password, :created, :updated)
-                RETURNING id
-                """;
+                RETURNING id""";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        long id = jdbc.update(sql,params,keyHolder);
-
+        long id = jdbc.update(sql, params, keyHolder);
 
         return keyHolder.getKeyAs(Long.class);
     }
@@ -66,8 +62,7 @@ public class SqlUserDao implements UserDao {
         String sql = """
                 UPDATE Users
                 SET user_name = :userName, password :password, updated= updated
-                WHERE id = :id
-                """;
+                WHERE id = :id""";
 
         jdbc.update(sql, params);
     }
@@ -80,23 +75,22 @@ public class SqlUserDao implements UserDao {
 
         String sql = """
                 SELECT * FROM Users
-                WHERE user_name = :userName
-                """;
+                WHERE user_name = :userName""";
 
-        List<User> users = jdbc.query(sql,params, rowMapper);
-        return !users.isEmpty() ? users.get(0) : null ;
+        List<User> users = jdbc.query(sql, params, rowMapper);
+        return !users.isEmpty() ? users.get(0) : null;
     }
 
     @Override
-    public boolean checkIfNoExists(String userName) {
+    public boolean checkIfExists(String userName) {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("userName", userName);
 
         String sql = """
-            SELECT EXISTS FROM (
-              SELECT 1 FROM users
-              WHERE user_name = :userName
-            )""";
+                SELECT EXISTS FROM (
+                  SELECT 1 FROM users
+                  WHERE user_name = :userName)""";
+
         return !jdbc.query(sql, params, (rs, i) -> rs.getBoolean(1)).get(0);
     }
 

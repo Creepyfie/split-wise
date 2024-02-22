@@ -13,20 +13,16 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserDto userDto;
-    private UserService userService;
+    private final UserService userService;
     private final AcceptRegistrationInAppCase aCase;
 
     @GetMapping("/register")
     public void registrationForm() {
     }
 
-
     @PostMapping("/registration")
-    public  UserDto performRegistration(EditUserRequest userRequest){
+    public UserDto performRegistration(EditUserRequest userRequest) {
             aCase.acceptRegistration(userRequest.getUserName(),userRequest.getPassword());
         return null;
     }
-
-
-
 }

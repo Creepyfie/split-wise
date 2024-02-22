@@ -10,5 +10,4 @@ public interface ExpenseDao {
     void update(long id, EditExpenseRequest editExpenseRequest);
 
     Expense findById(long id);
-
 }

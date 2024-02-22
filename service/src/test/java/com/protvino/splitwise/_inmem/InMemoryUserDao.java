@@ -33,10 +33,6 @@ public class InMemoryUserDao implements UserDao {
 
     @Override
     public User findByUserName(String userName) {
-        rows.values()
-                .stream()
-                .filter(user -> user.getUserName().equals(userName))
-                .findFirst();
         return rows.values()
                 .stream()
                 .filter(user -> user.getUserName().equals(userName))
@@ -44,11 +40,13 @@ public class InMemoryUserDao implements UserDao {
     }
 
     @Override
-    public boolean checkIfNoExists(String userName) {
+    public boolean checkIfExists(String userName) {
         return rows.values()
                 .stream()
-                .noneMatch(it -> it.getUserName() == userName);
+                .anyMatch(it -> it.getUserName() == userName);
     }
 
-    public void clear() {rows.clear();}
+    public void clear() {
+        rows.clear();
+    }
 }

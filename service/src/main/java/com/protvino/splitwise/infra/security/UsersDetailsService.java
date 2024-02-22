@@ -15,10 +15,11 @@ import java.util.Optional;
 public class UsersDetailsService implements UserDetailsService {
 
     private final SqlUserDao sqlUserDao;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = sqlUserDao.findByUserName(username);
-        if (user.equals(null))
+        if (user == null)
             throw new UsernameNotFoundException("User Not Found");
         return new StorageUserDetailsImpl(user);
     }

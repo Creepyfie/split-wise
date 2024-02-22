@@ -1,6 +1,6 @@
 package com.protvino.splitwise.port;
 
-import com.protvino.splitwise.adapter.impl.SqlParticipantDao;
+import com.protvino.splitwise.adapter.ParticipantDao;
 import com.protvino.splitwise.domain.request.EditParticipantRequest;
 import com.protvino.splitwise.service.AcceptInvitationToJoinInGroupUseCase;
 import lombok.RequiredArgsConstructor;
@@ -14,16 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class  ParticipantController {
 
-    private final SqlParticipantDao sqlParticipantDao;
-    private final AcceptInvitationToJoinInGroupUseCase aCase;
+    private final ParticipantDao participantDao;
+    private final AcceptInvitationToJoinInGroupUseCase acceptInvitationUseCase;
 
     @PostMapping
     public long addParticipant(@RequestBody EditParticipantRequest participant) {
-        /*long id = aCase.acceptInvitation(participant.getPersonId(),participant.getGroupId());
-        if (id == 0L)
-        throw new ParticipantAlreadyExistsException("Участник уже существует");
-        else
-        return id;*/
-        return aCase.acceptInvitation(participant.getPersonId(), participant.getGroupId());
+        return acceptInvitationUseCase.acceptInvitation(participant.getPersonId(), participant.getGroupId());
     }
 }

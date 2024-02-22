@@ -1,22 +1,23 @@
 package com.protvino.splitwise.infra.security;
 
-import com.protvino.splitwise.adapter.UserDao;
 import com.protvino.splitwise.domain.value.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
-
+@Value
 @RequiredArgsConstructor
 public class StorageUserDetailsImpl implements UserDetails {
 
     private final User user;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of();
     }
 
     @Override
@@ -40,15 +41,12 @@ public class StorageUserDetailsImpl implements UserDetails {
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {return true;
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public User getUser(){
-        return this.user;
     }
 }
