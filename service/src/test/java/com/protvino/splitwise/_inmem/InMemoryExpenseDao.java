@@ -30,7 +30,6 @@ public class InMemoryExpenseDao implements ExpenseDao {
                 editExpenseRequest.getTotal(),
                 editExpenseRequest.getComment()));
         }
-
     }
 
     @Override
@@ -38,5 +37,7 @@ public class InMemoryExpenseDao implements ExpenseDao {
         return expenses.get(id);
     }
 
-    public void clear(){expenses.clear();}
+    public void clear() {
+        expenses.clear();
+    }
 }

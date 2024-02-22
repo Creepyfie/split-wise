@@ -41,8 +41,7 @@ public class SqlParticipantDao implements ParticipantDao {
         String sql = """
             INSERT INTO participants(person_id, group_id, created, updated)
             VALUES (:person_id,:group_id,:created,:updated)
-            RETURNING id
-            """;
+            RETURNING id""";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -65,8 +64,7 @@ public class SqlParticipantDao implements ParticipantDao {
         String sql = """
             UPDATE participants
             SET person_id = :person_id, group_id = :group_id, updated = :updated
-            WHERE id = :id
-            """;
+            WHERE id = :id""";
 
         jdbc.update(sql, params);
     }
@@ -79,8 +77,7 @@ public class SqlParticipantDao implements ParticipantDao {
 
         String sql = """
             DELETE FROM participants
-            WHERE group_id = :group_id
-            """;
+            WHERE group_id = :group_id""";
 
         jdbc.update(sql, params);
     }
@@ -93,8 +90,7 @@ public class SqlParticipantDao implements ParticipantDao {
 
         String sql = """
             DELETE FROM participants
-            WHERE id = :id
-            """;
+            WHERE id = :id""";
 
         jdbc.update(sql, params);
     }
@@ -124,8 +120,7 @@ public class SqlParticipantDao implements ParticipantDao {
         String sql = """
             SELECT EXISTS FROM (
               SELECT 1 FROM participants
-              WHERE person_id = :personId AND group_id = :groupId
-            )""";
+              WHERE person_id = :personId AND group_id = :groupId)""";
         return !jdbc.query(sql, params, (rs, i) -> rs.getBoolean(1)).get(0);
     }
 

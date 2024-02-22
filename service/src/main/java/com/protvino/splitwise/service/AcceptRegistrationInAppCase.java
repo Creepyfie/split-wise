@@ -1,7 +1,7 @@
 package com.protvino.splitwise.service;
 
 import com.protvino.splitwise.adapter.UserDao;
-import com.protvino.splitwise.exceptions.UserAlreadyExistExeption;
+import com.protvino.splitwise.exceptions.UserAlreadyExistsExeption;
 import com.protvino.splitwise.port.dto.UserDto;
 import com.protvino.splitwise.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class AcceptRegistrationInAppCase {
         if (userExists) {
             userService.saveUser(new UserDto(0l, userName,password));
         } else {
-            throw new UserAlreadyExistExeption();
+            throw new UserAlreadyExistsExeption();
         }
     }
 }
