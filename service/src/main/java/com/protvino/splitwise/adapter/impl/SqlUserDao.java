@@ -78,6 +78,7 @@ public class SqlUserDao implements UserDao {
                 WHERE user_name = :userName""";
 
         List<User> users = jdbc.query(sql, params, rowMapper);
+
         return !users.isEmpty() ? users.get(0) : null;
     }
 

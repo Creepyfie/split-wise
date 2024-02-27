@@ -57,4 +57,12 @@ public class InMemoryDebtInExpense implements DebtInExpenseDao {
         }
         return result;
     }
+
+    @Override
+    public List<DebtInExpense> findByFromId(Long fromId) {
+        return debts.values()
+                .stream()
+                .filter(debt -> debt.getFromParticipantId() == fromId)
+                .toList();
+    }
 }

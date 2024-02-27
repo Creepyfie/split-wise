@@ -16,4 +16,6 @@ public interface DebtInExpenseDao {
     void delete(EditDebtInExpenseRequest request);
 
     List<DebtInExpense> findByExpenseId(Long expenseId);
+
+    List<DebtInExpense> findByFromId(Long fromId);
 }

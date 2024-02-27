@@ -37,8 +37,7 @@ public class SqlGroupDao implements GroupDao {
         String sql = """
             INSERT INTO groups(name, created, updated)
             VALUES (:name, :created, :updated)
-            RETURNING id
-            """;
+            RETURNING id""";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbc.update(sql, params, keyHolder);
@@ -57,8 +56,7 @@ public class SqlGroupDao implements GroupDao {
         String sql = """
             UPDATE groups
             SET name = :name, updated = :updated
-            WHERE id = :id
-            """;
+            WHERE id = :id""";
 
         jdbc.update(sql, params);
     }
@@ -71,8 +69,7 @@ public class SqlGroupDao implements GroupDao {
 
         String sql = """
             DELETE FROM groups
-            Where id = :id
-            """;
+            Where id = :id""";
 
         jdbc.update(sql, params);
     }
@@ -85,9 +82,10 @@ public class SqlGroupDao implements GroupDao {
 
         String sql = """
             SELECT FROM gorups
-            WHERE id = :id
-            """;
+            WHERE id = :id""";
+
         List<Group> results = jdbc.query(sql, params, groupRowMapper);
+
         return !results.isEmpty() ? results.get(0) : null;
     }
 
