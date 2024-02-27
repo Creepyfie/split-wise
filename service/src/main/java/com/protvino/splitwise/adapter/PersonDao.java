@@ -5,7 +5,7 @@ import com.protvino.splitwise.domain.value.Person;
 
 public interface PersonDao {
 
-    Long create(EditPersonRequest request);
+    long create(EditPersonRequest request);
 
     void update(Long id, EditPersonRequest request);
 

@@ -13,12 +13,6 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="created" type="timestamp with timezone" remarks="Дата создания записи">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated" type="timestamp with timezone" remarks="Дата изменения записи">
-                <constraints nullable="false"/>
-            </column>
             <column name="paying_participant_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -26,6 +20,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="comment" type="text"/>
+            <column name="created" type="timestamp with timezone" remarks="Дата создания записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated" type="timestamp with timezone" remarks="Дата изменения записи">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <comment>Initial commit</comment>

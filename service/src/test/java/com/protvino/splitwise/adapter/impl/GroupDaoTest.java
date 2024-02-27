@@ -1,8 +1,8 @@
 package com.protvino.splitwise.adapter.impl;
 
 import com.protvino.splitwise.IntegrationTest;
-import com.protvino.splitwise.adapter.GroupDAO;
-import com.protvino.splitwise.inmem.InMemoryGroupDao;
+import com.protvino.splitwise.adapter.GroupDao;
+import com.protvino.splitwise._inmem.InMemoryGroupDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Tag("DAO")
 public class GroupDaoTest extends IntegrationTest {
     @Autowired
-    private GroupDAO groupDAO;
+    private GroupDao groupDAO;
 
     private final InMemoryGroupDao inMemoryGroupDao = new InMemoryGroupDao();
 
@@ -24,7 +24,7 @@ public class GroupDaoTest extends IntegrationTest {
             clearTables("groups");
         }
         @Override
-        GroupDAO getDAO() {
+        GroupDao getDao() {
             return GroupDaoTest.this.groupDAO;
         }
     }
@@ -37,7 +37,7 @@ public class GroupDaoTest extends IntegrationTest {
             GroupDaoTest.this.inMemoryGroupDao.clear();
         }
         @Override
-        GroupDAO getDAO() {
+        GroupDao getDao() {
             return GroupDaoTest.this.inMemoryGroupDao;
         }
     }

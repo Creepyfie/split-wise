@@ -26,7 +26,7 @@ public class SqlPersonDao implements PersonDao {
     private final RowMapper<Person> personRowMapper = new PersonRowMapper();
 
     @Override
-    public Long create(EditPersonRequest request) {
+    public long create(EditPersonRequest request) {
 
         Timestamp now = Timestamp.from(Instant.now());
         SqlParameterSource params = new MapSqlParameterSource()

@@ -2,7 +2,7 @@ package com.protvino.splitwise.adapter.impl;
 
 import com.protvino.splitwise.IntegrationTest;
 import com.protvino.splitwise.adapter.PersonDao;
-import com.protvino.splitwise.inmem.InMemoryPersonDao;
+import com.protvino.splitwise._inmem.InMemoryPersonDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

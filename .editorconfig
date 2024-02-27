@@ -29,7 +29,7 @@ ij_any_blank_lines_after_imports = 1
 ij_any_blank_lines_after_package = 1
 ij_java_keep_simple_classes_in_one_line = true
 ij_java_space_before_array_initializer_left_brace = true
-ij_java_imports_layout=ru.detmir.**,com.detmir.**,|,*,|,javax.**,java.**,|,$*
+ij_java_imports_layout=com.protvino.**|,*,|,javax.**,java.**,|,$*
 
 [{*.yml, *.yaml}]
 tab_width = 2
