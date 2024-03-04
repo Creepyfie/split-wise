@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,19 @@ public class BusinessService {
         return balancesWithOther;
     }
 
-    public void refactorDebts() {
+    public void refactorDebts(long groupId) {
 
+        List<Participant> groupParticipants = participantDao.findByGroupId(groupId);
+        Iterator iterator = groupParticipants.listIterator();
+
+        if (groupParticipants.size() > 2){
+            groupParticipants.forEach({
+
+                    if(iterator.hasNext()) {
+
+                    }
+                }
+            );
+        }
     }
 }
