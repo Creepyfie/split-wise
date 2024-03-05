@@ -42,6 +42,7 @@ public class BusinessService {
                     debtInExpenseDao.findByFromId(participant.getId())
                             .stream()
                             .filter(p -> p.getToParticipantId() == id)
+                            .filter(p -> p.getToParticipantId() != id)
                             .forEach(debt ->
                                     balancesWithOther.merge(debt.getFromParticipantId(),debt.getAmount(),
                                             (k,v) -> v = v + debt.getAmount())
@@ -55,14 +56,23 @@ public class BusinessService {
         List<Participant> groupParticipants = participantDao.findByGroupId(groupId);
         Iterator iterator = groupParticipants.listIterator();
 
-        if (groupParticipants.size() > 2){
-            groupParticipants.forEach({
+        if (groupParticipants.size() > 2) {
+        iterator.next();
+            groupParticipants.forEach(participant -> {
+                 if(iterator.hasNext()) {
+                     Map<Long, Double> firstParticipantDebts = showDebtsToOtherParticipants(participant.getId());
 
-                    if(iterator.hasNext()) {
+                     Participant nextParticipant = (Participant) iterator.next();
 
-                    }
-                }
-            );
+                     Map<Long, Double> nextParticipantDebts = showDebtsToOtherParticipants(nextParticipant.getId());
+
+                     firstParticipantDebts.forEach((id,debt) -> {
+                         if (id != nextParticipant.getId() & debt < 0d & nextParticipantDebts.get(id) > 0d) {
+
+                         }
+                     });
+                 }
+            });
         }
     }
 }
