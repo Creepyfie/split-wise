@@ -11,10 +11,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class BusinessService {
@@ -51,28 +48,86 @@ public class BusinessService {
         return balancesWithOther;
     }
 
-    public void refactorDebts(long groupId) {
+    public Map<Long, Double> showAllBalances(long groupId) {
 
         List<Participant> groupParticipants = participantDao.findByGroupId(groupId);
-        Iterator iterator = groupParticipants.listIterator();
+        Map<Long, Double> participantsBalances = new HashMap<>();
+
+        groupParticipants.forEach(participant -> {
+            double balance = 0d;
+            for (Double debt : showDebtsToOtherParticipants(participant.getId())
+                    .values()) {
+                balance = +debt;
+            }
+            participantsBalances.put(participant.getId(), balance);
+        });
+        return participantsBalances;
+    }
+
+    public Map<Long, Map<Long, Double>> refactorDebts(long groupId) {
+
+        List<Participant> groupParticipants = participantDao.findByGroupId(groupId);
+        Map<Long, Map<Long, Double>> allParticipantToOtherParticipantsBalancesInGroup = new HashMap<>();
+
+        groupParticipants.forEach(participant -> {
+            allParticipantToOtherParticipantsBalancesInGroup.put(participant.getId(), showDebtsToOtherParticipants(participant.getId()));
+        });
 
         if (groupParticipants.size() > 2) {
-        iterator.next();
+
             groupParticipants.forEach(participant -> {
-                 if(iterator.hasNext()) {
-                     Map<Long, Double> firstParticipantDebts = showDebtsToOtherParticipants(participant.getId());
 
-                     Participant nextParticipant = (Participant) iterator.next();
+                Map<Long,Double> participantDebts = allParticipantToOtherParticipantsBalancesInGroup.get(participant.getId());
+                List<Long> positiveDebtId = new ArrayList<>();
+                List<Long> negativeDebtId = new ArrayList<>();
 
-                     Map<Long, Double> nextParticipantDebts = showDebtsToOtherParticipants(nextParticipant.getId());
 
-                     firstParticipantDebts.forEach((id,debt) -> {
-                         if (id != nextParticipant.getId() & debt < 0d & nextParticipantDebts.get(id) > 0d) {
+                participantDebts.forEach((id, debt) -> {
+                    if (debt > 0d) {
+                        positiveDebtId.add(id);
+                    } else
+                        negativeDebtId.add(id);
+                });
 
-                         }
-                     });
-                 }
+                negativeDebtId.forEach(negativeId -> {
+
+                    Map<Long,Double> negIdParticipantDebts = allParticipantToOtherParticipantsBalancesInGroup.get(negativeId);
+
+                    positiveDebtId.forEach(positiveId -> {
+
+                        Map<Long,Double> posIdParticipantDebts = allParticipantToOtherParticipantsBalancesInGroup.get(positiveId);
+                        Double negativeDebt = participantDebts.get(negativeId);
+                        Double positiveDebt = participantDebts.get(positiveId);
+
+                        if(positiveDebt + negativeDebt > 0d) {
+
+                            participantDebts.put(negativeId, 0d);
+                            participantDebts.put(positiveId,positiveDebt + negativeDebt);
+
+                            negIdParticipantDebts.put(participant.getId(), 0d);
+                            negIdParticipantDebts.put(positiveId, negIdParticipantDebts.get(positiveId) - negativeDebt);
+
+                            posIdParticipantDebts.put(participant.getId(), posIdParticipantDebts.get(participant.getId()) - negativeDebt);
+                            posIdParticipantDebts.put(negativeId, posIdParticipantDebts.get(negativeId) + negativeDebt);
+                        } else {
+
+                            participantDebts.put(negativeId, negativeDebt + positiveDebt);
+                            participantDebts.put(positiveId,0d);
+
+                            negIdParticipantDebts.put(participant.getId(),-negativeDebt - positiveDebt);
+                            negIdParticipantDebts.put(positiveId, negIdParticipantDebts.get(positiveId) + positiveDebt);
+
+                            posIdParticipantDebts.put(participant.getId(), 0d);
+                            posIdParticipantDebts.put(negativeId, posIdParticipantDebts.get(negativeId) - positiveDebt);
+                        }
+
+                        allParticipantToOtherParticipantsBalancesInGroup.put(participant.getId(), participantDebts);
+                        allParticipantToOtherParticipantsBalancesInGroup.put(negativeId,negIdParticipantDebts);
+                        allParticipantToOtherParticipantsBalancesInGroup.put(positiveId,posIdParticipantDebts);
+                    });
+                });
             });
         }
+        return allParticipantToOtherParticipantsBalancesInGroup;
     }
 }
