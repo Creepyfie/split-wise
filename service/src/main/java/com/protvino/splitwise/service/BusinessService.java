@@ -10,13 +10,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
-
+@Component
 @RequiredArgsConstructor
 public class BusinessService {
 
-    private final NamedParameterJdbcOperations jdbc;
     private final ParticipantDao participantDao;
     private final DebtInExpenseDao debtInExpenseDao;
 
@@ -30,6 +30,7 @@ public class BusinessService {
 
         debtInExpenseDao.findByFromId(id)
                 .stream()
+                .filter(p -> p.getToParticipantId() != id)
                 .forEach(debt ->
                     balancesWithOther.merge(debt.getToParticipantId(),-debt.getAmount(),(k,v) -> v = v - debt.getAmount())
                 );
@@ -39,7 +40,7 @@ public class BusinessService {
                     debtInExpenseDao.findByFromId(participant.getId())
                             .stream()
                             .filter(p -> p.getToParticipantId() == id)
-                            .filter(p -> p.getToParticipantId() != id)
+                            .filter(p -> p.getFromParticipantId() != id)
                             .forEach(debt ->
                                     balancesWithOther.merge(debt.getFromParticipantId(),debt.getAmount(),
                                             (k,v) -> v = v + debt.getAmount())
