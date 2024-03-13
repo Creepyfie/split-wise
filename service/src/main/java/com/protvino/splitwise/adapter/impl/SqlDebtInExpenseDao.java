@@ -102,6 +102,21 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
         return debts;
     }
 
+    @Override
+    public List<DebtInExpense> findByFromId(Long fromId) {
+
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("fromId", fromId);
+
+        String sql = """
+            SELECT FROM debt_in_expense
+            WHERE from_participant_id = :fromId""";
+
+        List<DebtInExpense> debts = jdbc.query(sql, params, rowMapper);
+
+        return debts;
+    }
+
     static class DebtInExpenseRowMapper implements RowMapper<DebtInExpense> {
         @Override
         public DebtInExpense mapRow(ResultSet rs, int rowNum) throws SQLException {

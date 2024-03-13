@@ -3,7 +3,6 @@ package com.protvino.splitwise._inmem;
 import com.protvino.splitwise.adapter.DebtInExpenseDao;
 import com.protvino.splitwise.domain.request.EditDebtInExpenseRequest;
 import com.protvino.splitwise.domain.value.DebtInExpense;
-import org.testcontainers.shaded.com.google.common.hash.HashCode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class InMemoryDebtInExpense implements DebtInExpenseDao {
+public class InMemoryDebtInExpenseDao implements DebtInExpenseDao {
 
     Map<Long,DebtInExpense> debts = new HashMap<>();
 
@@ -56,5 +55,13 @@ public class InMemoryDebtInExpense implements DebtInExpenseDao {
                 result.add(debt.getValue());
         }
         return result;
+    }
+
+    @Override
+    public List<DebtInExpense> findByFromId(Long fromId) {
+        return debts.values()
+                .stream()
+                .filter(debt -> debt.getFromParticipantId() == fromId)
+                .toList();
     }
 }

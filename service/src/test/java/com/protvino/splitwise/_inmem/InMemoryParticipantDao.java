@@ -5,6 +5,7 @@ import com.protvino.splitwise.domain.request.EditParticipantRequest;
 import com.protvino.splitwise.domain.value.Participant;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -47,6 +48,14 @@ public class InMemoryParticipantDao implements ParticipantDao {
     @Override
     public Participant findById(Long id) {
         return rows.get(id);
+    }
+
+    @Override
+    public List<Participant> findByGroupId(Long groupId) {
+        return rows.values()
+                .stream()
+                .filter(it -> it.getGroupId() == groupId)
+                .toList();
     }
 
     @Override

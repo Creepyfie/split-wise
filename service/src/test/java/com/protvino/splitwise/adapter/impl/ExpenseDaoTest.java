@@ -3,6 +3,7 @@ package com.protvino.splitwise.adapter.impl;
 import com.protvino.splitwise.IntegrationTest;
 import com.protvino.splitwise._inmem.InMemoryExpenseDao;
 import com.protvino.splitwise.adapter.ExpenseDao;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

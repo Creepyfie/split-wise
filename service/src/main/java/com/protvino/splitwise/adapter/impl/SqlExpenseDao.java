@@ -41,8 +41,7 @@ public class SqlExpenseDao implements ExpenseDao {
         String sql = """
             INSERT INTO expenses(paying_participant_id, total, comment, created, updated)
             VALUES (:paying_participant_id, :total, :comment, :created, : updated)
-            RETURNING id
-            """;
+            RETURNING id""";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -68,8 +67,7 @@ public class SqlExpenseDao implements ExpenseDao {
                 total = :total,
                 comment = :comment,
                 updated = :updated
-            WHERE id = :id
-            """;
+            WHERE id = :id""";
 
         jdbc.update(sql, params);
     }
@@ -82,8 +80,7 @@ public class SqlExpenseDao implements ExpenseDao {
 
         String sql = """
             SELECT FROM expenses
-            WHERE id = :id
-            """;
+            WHERE id = :id""";
 
         List<Expense> result = jdbc.query(sql, params, rowMapper);
         return !result.isEmpty() ? result.get(0) : null;

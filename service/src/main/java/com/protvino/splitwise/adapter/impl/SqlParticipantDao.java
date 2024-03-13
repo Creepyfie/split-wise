@@ -103,11 +103,23 @@ public class SqlParticipantDao implements ParticipantDao {
 
         String sql = """
             SELECT FROM participants
-            WHERE id = :id
-            """;
+            WHERE id = :id""";
         List<Participant> result = jdbc.query(sql, params, rowMapper);
 
         return !result.isEmpty() ? result.get(0) : null;
+    }
+
+    @Override
+    public List<Participant> findByGroupId(Long groupId) {
+
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("groupId", groupId);
+
+        String sql = """
+            SELECT * FROM Participants
+            WHERE group_id = :groupId""";
+
+        return jdbc.query(sql,params,rowMapper);
     }
 
     @Override
@@ -121,6 +133,7 @@ public class SqlParticipantDao implements ParticipantDao {
             SELECT EXISTS FROM (
               SELECT 1 FROM participants
               WHERE person_id = :personId AND group_id = :groupId)""";
+
         return !jdbc.query(sql, params, (rs, i) -> rs.getBoolean(1)).get(0);
     }
 
