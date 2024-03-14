@@ -61,7 +61,7 @@ public class SqlUserDao implements UserDao {
 
         String sql = """
                 UPDATE Users
-                SET user_name = :userName, password :password, updated= updated
+                SET user_name = :userName, password = :password, updated = :updated
                 WHERE id = :id""";
 
         jdbc.update(sql, params);
@@ -98,7 +98,7 @@ public class SqlUserDao implements UserDao {
     static class UserRowMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(
+            return new User (
                     rs.getLong("id"),
                     rs.getString("user_name"),
                     rs.getString("password")

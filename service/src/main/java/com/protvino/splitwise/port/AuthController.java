@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserDto userDto;
+ //   private final UserDto userDto;
     private UserService userService;
     private final AcceptRegistrationInAppCase aCase;
 

@@ -129,8 +129,8 @@ public class BusinessServiceTest {
         expected.put(participantId2,partMap2);
 
         Map<Long, Double> partMap3 = new HashMap<>();
-        partMap3.put(participantId2, -100d);
-        partMap3.put(participantId3, -100d);
+        partMap3.put(participantId1, 100d);
+        partMap3.put(participantId2, 100d);
         expected.put(participantId3,partMap3);
 
         assertThat(result).isEqualTo(expected);
