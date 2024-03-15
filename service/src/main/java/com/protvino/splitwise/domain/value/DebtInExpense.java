@@ -2,11 +2,12 @@ package com.protvino.splitwise.domain.value;
 
 import lombok.Value;
 
+import java.math.BigDecimal;
+
 @Value
 public class DebtInExpense {
 
     Long expenseId;
-    Long fromParticipantId;
-    Long toParticipantId;
-    Double amount;
+    Long participantId;
+    BigDecimal amount;
 }

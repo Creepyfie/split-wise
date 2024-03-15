@@ -43,7 +43,7 @@ public class ExpenseController {
             .id(ThreadLocalRandom.current().nextLong())
             .groupId(ThreadLocalRandom.current().nextLong())
             .payingParticipantId(ThreadLocalRandom.current().nextLong())
-            .total(ThreadLocalRandom.current().nextDouble())
+            .total(ThreadLocalRandom.current().nextBigDecimal())
             .comment("Comment" + ThreadLocalRandom.current().nextInt(1000))
             .build();
         expenses.put(expense.getId(), expense);

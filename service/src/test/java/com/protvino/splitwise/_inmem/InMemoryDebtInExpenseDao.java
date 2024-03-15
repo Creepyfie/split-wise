@@ -61,7 +61,7 @@ public class InMemoryDebtInExpenseDao implements DebtInExpenseDao {
     public List<DebtInExpense> findByFromId(Long fromId) {
         return debts.values()
                 .stream()
-                .filter(debt -> debt.getFromParticipantId() == fromId)
+                .filter(debt -> debt.getParticipantId() == fromId)
                 .toList();
     }
 }

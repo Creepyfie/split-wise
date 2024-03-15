@@ -18,7 +18,7 @@ public abstract class ExpenseDaoTestCases {
         // Arrange
         Long groupId = 123L;
         Long paying_participantId = 123L;
-        Double total = 234d;
+        BigDecimal total = 234d;
         String comment = "Comment";
 
         // Act
@@ -37,13 +37,13 @@ public abstract class ExpenseDaoTestCases {
         // Arrange
         Long groupId = 123L;
         Long paying_participantId = 123L;
-        Double total = 234d;
+        BigDecimal total = 234d;
         String comment = "Comment";
         long actualId = expenseDao.create(new EditExpenseRequest(paying_participantId,total,comment));
 
         // Act
         Long updatePaying_participantId = 123L;
-        Double updateTotal = 234d;
+        BigDecimal updateTotal = 234d;
         String updateComment = "Comment";
         expenseDao.update(actualId, new EditExpenseRequest(updatePaying_participantId
             ,updateTotal
@@ -66,7 +66,7 @@ public abstract class ExpenseDaoTestCases {
         // Arrange
         // Act
         Long updatePaying_participantId = 123L;
-        Double updateTotal = 234d;
+        BigDecimal updateTotal = 234d;
         String updateComment = "Comment";
         expenseDao.update(666L, new EditExpenseRequest(updatePaying_participantId
             ,updateTotal
@@ -84,7 +84,7 @@ public abstract class ExpenseDaoTestCases {
         // Arrange
         Long groupId = 123L;
         Long paying_participantId = 123L;
-        Double total = 234d;
+        BigDecimal total = 234d;
         String comment = "Comment";
         long actualId = expenseDao.create(new EditExpenseRequest(paying_participantId,total,comment));
 
@@ -103,7 +103,7 @@ public abstract class ExpenseDaoTestCases {
         // Arrange
         Long groupId = 123L;
         Long paying_participantId = 123L;
-        Double total = 234d;
+        BigDecimal total = 234d;
         String comment = "Comment";
         expenseDao.create(new EditExpenseRequest(paying_participantId,total,comment));
 

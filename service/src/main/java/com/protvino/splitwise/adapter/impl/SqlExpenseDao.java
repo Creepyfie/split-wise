@@ -92,7 +92,7 @@ public class SqlExpenseDao implements ExpenseDao {
             return new Expense(
                 rs.getLong("id"),
                 rs.getLong("paying_participant_id"),
-                rs.getDouble("total"),
+                rs.getBigDecimal("total"),
                 rs.getString("comment")
             );
         }

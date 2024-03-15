@@ -7,6 +7,6 @@ public class Expense {
 
     Long id;
     Long paying_participantId;
-    Double total;
+    BigDecimal total;
     String comment;
 }

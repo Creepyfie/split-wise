@@ -1,18 +1,24 @@
 package com.protvino.splitwise.service;
 
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.protvino.splitwise.adapter.DebtInExpenseDao;
 import com.protvino.splitwise.adapter.ParticipantDao;
 import com.protvino.splitwise.domain.value.DebtInExpense;
 import com.protvino.splitwise.domain.value.Participant;
+import com.protvino.splitwise.model.DebtInExpenseView;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.apache.commons.collections4.SetUtils;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.*;
+
+import static com.google.common.base.MoreObjects.*;
+import static java.math.BigDecimal.ZERO;
+import static java.util.stream.Collectors.*;
+
 @Component
 @RequiredArgsConstructor
 public class BusinessService {
@@ -20,44 +26,61 @@ public class BusinessService {
     private final ParticipantDao participantDao;
     private final DebtInExpenseDao debtInExpenseDao;
 
-    public Map<Long, Double> showDebtsToOtherParticipants(long id) {
+    /**
+     * Возвращает список моих участий (debts) в чужих тратах (expenses).
+     * key - participantId, value - debt
+     */
+    public Map<Long, BigDecimal> showScoreRelativeToForeignParticipants(long participantId) {
 
-        Map<Long, Double> balancesWithOther = new HashMap<>();
+        Map<Long, BigDecimal> participantDebtsByPayerId = findParticipantDebts(participantId);
+        Map<Long, BigDecimal> foreignDebtsByParticipantId = findForeignDebts(participantId);
 
-        Participant participantInfo = participantDao.findById(id);
+        Map<Long, BigDecimal> scoreRelativeForeigners = new HashMap<>();
 
-        List<Participant> groupParticipants = participantDao.findByGroupId(participantInfo.getGroupId());
+        for (Long foreignParticipantId : SetUtils.union(participantDebtsByPayerId.keySet(), foreignDebtsByParticipantId.keySet())) {
 
-        debtInExpenseDao.findByFromId(id)
-                .stream()
-                .filter(p -> p.getToParticipantId() != id)
-                .forEach(debt ->
-                    balancesWithOther.merge(debt.getToParticipantId(),-debt.getAmount(),(k,v) -> v = v - debt.getAmount())
-                );
+            BigDecimal positiveScore = firstNonNull(foreignDebtsByParticipantId.get(foreignParticipantId), ZERO);
+            BigDecimal negativeScore = firstNonNull(participantDebtsByPayerId.get(foreignParticipantId), ZERO);
 
-        groupParticipants.stream()
-                .forEach(participant ->
-                    debtInExpenseDao.findByFromId(participant.getId())
-                            .stream()
-                            .filter(p -> p.getToParticipantId() == id)
-                            .filter(p -> p.getFromParticipantId() != id)
-                            .forEach(debt ->
-                                    balancesWithOther.merge(debt.getFromParticipantId(),debt.getAmount(),
-                                            (k,v) -> v = v + debt.getAmount())
-                            ));
+            BigDecimal totalScore = positiveScore.subtract(negativeScore);
 
-        return balancesWithOther;
+            scoreRelativeForeigners.put(foreignParticipantId, totalScore);
+        }
+
+        return scoreRelativeForeigners;
     }
 
-    public Map<Long, Double> showAllBalances(long groupId) {
+    private Map<Long, BigDecimal> findForeignDebts(long participantId) {
+
+        List<DebtInExpenseView> debtsByForeigners = debtInExpenseDao.findForeignDebtsInExpensesPaidByParticipant(participantId);
+
+        return debtsByForeigners.stream()
+            .collect(groupingBy(
+                DebtInExpenseView::getParticipantId,
+                reducing(ZERO, DebtInExpenseView::getAmount, BigDecimal::add)
+            ));
+    }
+
+    private Map<Long, BigDecimal> findParticipantDebts(long participantId) {
+
+        List<DebtInExpenseView> debtsByParticipant = debtInExpenseDao.findDebtsInForeignExpensesByParticipantId(participantId);
+
+        return debtsByParticipant.stream()
+            .collect(groupingBy(
+                DebtInExpenseView::getPayingParticipantId,
+                reducing(ZERO, DebtInExpenseView::getAmount, BigDecimal::add)
+            ));
+    }
+
+    public Map<Long, BigDecimal> showAllBalances(long groupId) {
 
         List<Participant> groupParticipants = participantDao.findByGroupId(groupId);
-        Map<Long, Double> participantsBalances = new HashMap<>();
+        Map<Long, BigDecimal> participantsBalances = new HashMap<>();
 
         groupParticipants.forEach(participant -> {
-            double balance = 0d;
-            for (Double debt : showDebtsToOtherParticipants(participant.getId())
-                    .values()) {
+            BigDecimal balance = 0d;
+            for (BigDecimal debt : showScoreRelativeToForeignParticipants(participant.getId())
+                .values()) {
                 balance = +debt;
             }
             participantsBalances.put(participant.getId(), balance);
@@ -65,20 +88,20 @@ public class BusinessService {
         return participantsBalances;
     }
 
-    public Map<Long, Map<Long, Double>> refactorDebts(long groupId) {
+    public Map<Long, Map<Long, BigDecimal>> refactorDebts(long groupId) {
 
         List<Participant> groupParticipants = participantDao.findByGroupId(groupId);
-        Map<Long, Map<Long, Double>> allParticipantToOtherParticipantsBalancesInGroup = new HashMap<>();
+        Map<Long, Map<Long, BigDecimal>> allParticipantToOtherParticipantsBalancesInGroup = new HashMap<>();
 
         groupParticipants.forEach(participant -> {
-            allParticipantToOtherParticipantsBalancesInGroup.put(participant.getId(), showDebtsToOtherParticipants(participant.getId()));
+            allParticipantToOtherParticipantsBalancesInGroup.put(participant.getId(), showScoreRelativeToForeignParticipants(participant.getId()));
         });
 
         if (groupParticipants.size() > 2) {
 
             groupParticipants.forEach(participant -> {
 
-                Map<Long,Double> participantDebts = allParticipantToOtherParticipantsBalancesInGroup.get(participant.getId());
+                Map<Long, BigDecimal> participantDebts = allParticipantToOtherParticipantsBalancesInGroup.get(participant.getId());
                 List<Long> positiveDebtId = new ArrayList<>();
                 List<Long> negativeDebtId = new ArrayList<>();
 
@@ -92,18 +115,18 @@ public class BusinessService {
 
                 negativeDebtId.forEach(negativeId -> {
 
-                    Map<Long,Double> negIdParticipantDebts = allParticipantToOtherParticipantsBalancesInGroup.get(negativeId);
+                    Map<Long, BigDecimal> negIdParticipantDebts = allParticipantToOtherParticipantsBalancesInGroup.get(negativeId);
 
                     positiveDebtId.forEach(positiveId -> {
 
-                        Map<Long,Double> posIdParticipantDebts = allParticipantToOtherParticipantsBalancesInGroup.get(positiveId);
-                        Double negativeDebt = participantDebts.get(negativeId);
-                        Double positiveDebt = participantDebts.get(positiveId);
+                        Map<Long, BigDecimal> posIdParticipantDebts = allParticipantToOtherParticipantsBalancesInGroup.get(positiveId);
+                        BigDecimal negativeDebt = participantDebts.get(negativeId);
+                        BigDecimal positiveDebt = participantDebts.get(positiveId);
 
-                        if(positiveDebt + negativeDebt > 0d) {
+                        if (positiveDebt + negativeDebt > 0d) {
 
                             participantDebts.put(negativeId, 0d);
-                            participantDebts.put(positiveId,positiveDebt + negativeDebt);
+                            participantDebts.put(positiveId, positiveDebt + negativeDebt);
 
                             negIdParticipantDebts.put(participant.getId(), 0d);
                             negIdParticipantDebts.put(positiveId, negIdParticipantDebts.get(positiveId) - negativeDebt);
@@ -113,9 +136,9 @@ public class BusinessService {
                         } else {
 
                             participantDebts.put(negativeId, negativeDebt + positiveDebt);
-                            participantDebts.put(positiveId,0d);
+                            participantDebts.put(positiveId, 0d);
 
-                            negIdParticipantDebts.put(participant.getId(),-negativeDebt - positiveDebt);
+                            negIdParticipantDebts.put(participant.getId(), -negativeDebt - positiveDebt);
                             negIdParticipantDebts.put(positiveId, negIdParticipantDebts.get(positiveId) + positiveDebt);
 
                             posIdParticipantDebts.put(participant.getId(), 0d);
@@ -123,8 +146,8 @@ public class BusinessService {
                         }
 
                         allParticipantToOtherParticipantsBalancesInGroup.put(participant.getId(), participantDebts);
-                        allParticipantToOtherParticipantsBalancesInGroup.put(negativeId,negIdParticipantDebts);
-                        allParticipantToOtherParticipantsBalancesInGroup.put(positiveId,posIdParticipantDebts);
+                        allParticipantToOtherParticipantsBalancesInGroup.put(negativeId, negIdParticipantDebts);
+                        allParticipantToOtherParticipantsBalancesInGroup.put(positiveId, posIdParticipantDebts);
                     });
                 });
             });

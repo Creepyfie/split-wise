@@ -8,5 +8,5 @@ public class EditDebtInExpenseRequest {
     Long expenseId;
     Long fromParticipantId;
     Long toParticipantId;
-    Double amount;
+    BigDecimal amount;
 }

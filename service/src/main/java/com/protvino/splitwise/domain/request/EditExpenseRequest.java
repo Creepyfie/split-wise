@@ -6,6 +6,6 @@ import lombok.Value;
 public class EditExpenseRequest {
 
     Long payingParticipantId;
-    Double total;
+    BigDecimal total;
     String comment;
 }

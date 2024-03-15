@@ -37,8 +37,8 @@ public class BusinessServiceTest {
         Long personId2 = 222L;
         Long personId3 = 333L;
         Long expenseId = 444L;
-        Double amount1 = 100d;
-        Double amount2 = 200d;
+        BigDecimal amount1 = 100d;
+        BigDecimal amount2 = 200d;
 
         // Act
         Long groupId = inMemoryGroupDao.create(new EditGroupRequest(groupName));
@@ -51,9 +51,9 @@ public class BusinessServiceTest {
         inMemoryDebtInExpenseDao.create(new EditDebtInExpenseRequest(expenseId,participantId2, participantId2,0d));
 
         // Assert
-        Map<Long, Double> result = businessService.showAllBalances(groupId);
+        Map<Long, BigDecimal> result = businessService.showAllBalances(groupId);
 
-        Map<Long, Double> expected = new HashMap<>();
+        Map<Long, BigDecimal> expected = new HashMap<>();
         expected.put(participantId1,amount1);
         expected.put(participantId3,amount2);
 
@@ -68,8 +68,8 @@ public class BusinessServiceTest {
         Long personId2 = 222L;
         Long personId3 = 333L;
         Long expenseId = 444L;
-        Double amount1 = 100d;
-        Double amount2 = 200d;
+        BigDecimal amount1 = 100d;
+        BigDecimal amount2 = 200d;
 
         // Act
         Long groupId = inMemoryGroupDao.create(new EditGroupRequest(groupName));
@@ -82,9 +82,9 @@ public class BusinessServiceTest {
         inMemoryDebtInExpenseDao.create(new EditDebtInExpenseRequest(expenseId,participantId2, participantId2,0d));
 
         // Assert
-        Map<Long, Double> result = businessService.showAllBalances(groupId);
+        Map<Long, BigDecimal> result = businessService.showAllBalances(groupId);
 
-        Map<Long, Double> expected = new HashMap<>();
+        Map<Long, BigDecimal> expected = new HashMap<>();
         expected.put(participantId1,-amount1);
         expected.put(participantId2,amount1 + amount2);
         expected.put(participantId3,-amount2);
@@ -101,8 +101,8 @@ public class BusinessServiceTest {
         Long personId3 = 333L;
         Long expenseId1 = 444L;
         Long expenseId2 = 555L;
-        Double amount1 = 100d;
-        Double amount2 = 200d;
+        BigDecimal amount1 = 100d;
+        BigDecimal amount2 = 200d;
 
         // Act
         Long groupId = inMemoryGroupDao.create(new EditGroupRequest(groupName));
@@ -114,21 +114,21 @@ public class BusinessServiceTest {
         inMemoryDebtInExpenseDao.create(new EditDebtInExpenseRequest(expenseId2,participantId2, participantId3,amount2));
 
         // Assert
-        Map<Long, Map<Long, Double>> result = businessService.refactorDebts(groupId);
+        Map<Long, Map<Long, BigDecimal>> result = businessService.refactorDebts(groupId);
         // Act
-        Map<Long, Map<Long, Double>> expected = new HashMap<>();
+        Map<Long, Map<Long, BigDecimal>> expected = new HashMap<>();
 
-        Map<Long, Double> partMap1 = new HashMap<>();
+        Map<Long, BigDecimal> partMap1 = new HashMap<>();
         partMap1.put(participantId2, 0d);
         partMap1.put(participantId3, -100d);
         expected.put(participantId1,partMap1);
 
-        Map<Long, Double> partMap2 = new HashMap<>();
+        Map<Long, BigDecimal> partMap2 = new HashMap<>();
         partMap2.put(participantId1, 0d);
         partMap2.put(participantId3, -100d);
         expected.put(participantId2,partMap2);
 
-        Map<Long, Double> partMap3 = new HashMap<>();
+        Map<Long, BigDecimal> partMap3 = new HashMap<>();
         partMap3.put(participantId1, 100d);
         partMap3.put(participantId2, 100d);
         expected.put(participantId3,partMap3);

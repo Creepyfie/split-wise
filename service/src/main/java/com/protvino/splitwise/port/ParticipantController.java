@@ -22,7 +22,7 @@ public class  ParticipantController {
     }
 
     @GetMapping("/{id}")
-    public Map<Long, Double> showDebts(@RequestParam("id") long id) {
+    public Map<Long, BigDecimal> showDebts(@RequestParam("id") long id) {
         return null;
     }
 }

@@ -3,6 +3,7 @@ package com.protvino.splitwise.adapter.impl;
 import com.protvino.splitwise.adapter.DebtInExpenseDao;
 import com.protvino.splitwise.domain.request.EditDebtInExpenseRequest;
 import com.protvino.splitwise.domain.value.DebtInExpense;
+import com.protvino.splitwise.model.DebtInExpenseView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
     private final NamedParameterJdbcOperations jdbc;
 
     private final RowMapper<DebtInExpense> rowMapper = new DebtInExpenseRowMapper();
+    private final RowMapper<DebtInExpenseView> viewRowMapper = new DebtInExpenseViewRowMapper();
 
     @Override
     public void create(EditDebtInExpenseRequest request) {
@@ -109,12 +112,38 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
                 .addValue("fromId", fromId);
 
         String sql = """
-            SELECT FROM debt_in_expense
+            SELECT de.* FROM debt_in_expense de
             WHERE from_participant_id = :fromId""";
 
         List<DebtInExpense> debts = jdbc.query(sql, params, rowMapper);
 
         return debts;
+    }
+
+    @Override
+    public List<DebtInExpenseView> findDebtsInForeignExpensesByParticipantId(Long participantId) {
+
+        String sql = """
+            SELECT e.paying_participant_id, participant_id, amount
+            FROM debt_in_expense de
+            JOIN expenses e on de.expense_id = e.id
+            WHERE e.paying_participant_id <> :participantId
+              AND de.from_participant_id = :participantId""";
+
+        return jdbc.query(sql, Map.of("participantId", participantId), viewRowMapper);
+    }
+
+    @Override
+    public List<DebtInExpenseView> findForeignDebtsInExpensesPaidByParticipant(Long participantId) {
+
+        String sql = """
+            SELECT e.paying_participant_id, participant_id, amount
+            FROM debt_in_expense de
+            JOIN expenses e on de.expense_id = e.id
+            WHERE e.paying_participant_id = :participantId
+              AND de.from_participant_id <> :participantId""";
+
+        return jdbc.query(sql, Map.of("participantId", participantId), viewRowMapper);
     }
 
     static class DebtInExpenseRowMapper implements RowMapper<DebtInExpense> {
@@ -124,8 +153,19 @@ public class SqlDebtInExpenseDao implements DebtInExpenseDao {
                 rs.getLong("expense_id"),
                 rs.getLong("from_participant_id"),
                 rs.getLong("to_participant_id"),
-                rs.getDouble("amount")
+                rs.getBigDecimal("amount")
             );
+        }
+    }
+
+    static class DebtInExpenseViewRowMapper implements RowMapper<DebtInExpenseView> {
+        @Override
+        public DebtInExpenseView mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return  DebtInExpenseView.builder()
+                .payingParticipantId(rs.getLong("paying_participant_id"))
+                .participantId(rs.getLong("participant_id"))
+                .amount(rs.getBigDecimal("amount"))
+                .build();
         }
     }
 }
