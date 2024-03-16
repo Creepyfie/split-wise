@@ -1,11 +1,8 @@
 package com.protvino.splitwise.service;
 
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.protvino.splitwise.adapter.DebtInExpenseDao;
 import com.protvino.splitwise.adapter.ParticipantDao;
-import com.protvino.splitwise.domain.value.DebtInExpense;
 import com.protvino.splitwise.domain.value.Participant;
 import com.protvino.splitwise.model.DebtInExpenseView;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +12,9 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static com.google.common.base.MoreObjects.*;
 import static java.math.BigDecimal.ZERO;
 import static java.util.stream.Collectors.*;
+import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 @Component
 @RequiredArgsConstructor
@@ -78,11 +75,11 @@ public class BusinessService {
         Map<Long, BigDecimal> participantsBalances = new HashMap<>();
 
         groupParticipants.forEach(participant -> {
-            BigDecimal balance = 0d;
-            for (BigDecimal debt : showScoreRelativeToForeignParticipants(participant.getId())
-                .values()) {
-                balance = +debt;
+            BigDecimal balance = ZERO;
+            for (BigDecimal debt : showScoreRelativeToForeignParticipants(participant.getId()).values()) {
+                balance = balance.add(debt);
             }
+
             participantsBalances.put(participant.getId(), balance);
         });
         return participantsBalances;
@@ -107,7 +104,7 @@ public class BusinessService {
 
 
                 participantDebts.forEach((id, debt) -> {
-                    if (debt > 0d) {
+                    if (debt.compareTo(ZERO) == 1) {
                         positiveDebtId.add(id);
                     } else
                         negativeDebtId.add(id);
@@ -123,26 +120,26 @@ public class BusinessService {
                         BigDecimal negativeDebt = participantDebts.get(negativeId);
                         BigDecimal positiveDebt = participantDebts.get(positiveId);
 
-                        if (positiveDebt + negativeDebt > 0d) {
+                        if (positiveDebt.add(negativeDebt).compareTo(ZERO) == 1) {
 
-                            participantDebts.put(negativeId, 0d);
-                            participantDebts.put(positiveId, positiveDebt + negativeDebt);
+                            participantDebts.put(negativeId, ZERO);
+                            participantDebts.put(positiveId, positiveDebt.add(negativeDebt));
 
-                            negIdParticipantDebts.put(participant.getId(), 0d);
-                            negIdParticipantDebts.put(positiveId, negIdParticipantDebts.get(positiveId) - negativeDebt);
+                            negIdParticipantDebts.put(participant.getId(), ZERO);
+                            negIdParticipantDebts.put(positiveId, negIdParticipantDebts.get(positiveId).subtract(negativeDebt));
 
-                            posIdParticipantDebts.put(participant.getId(), posIdParticipantDebts.get(participant.getId()) - negativeDebt);
-                            posIdParticipantDebts.put(negativeId, posIdParticipantDebts.get(negativeId) + negativeDebt);
+                            posIdParticipantDebts.put(participant.getId(), posIdParticipantDebts.get(participant.getId()).subtract(negativeDebt));
+                            posIdParticipantDebts.put(negativeId, posIdParticipantDebts.get(negativeId).add(negativeDebt));
                         } else {
 
-                            participantDebts.put(negativeId, negativeDebt + positiveDebt);
-                            participantDebts.put(positiveId, 0d);
+                            participantDebts.put(negativeId, negativeDebt.add(positiveDebt));
+                            participantDebts.put(positiveId, ZERO);
 
-                            negIdParticipantDebts.put(participant.getId(), -negativeDebt - positiveDebt);
-                            negIdParticipantDebts.put(positiveId, negIdParticipantDebts.get(positiveId) + positiveDebt);
+                            negIdParticipantDebts.put(participant.getId(), ZERO.subtract(negativeDebt).subtract(positiveDebt));
+                            negIdParticipantDebts.put(positiveId, negIdParticipantDebts.get(positiveId).add(positiveDebt));
 
-                            posIdParticipantDebts.put(participant.getId(), 0d);
-                            posIdParticipantDebts.put(negativeId, posIdParticipantDebts.get(negativeId) - positiveDebt);
+                            posIdParticipantDebts.put(participant.getId(), ZERO);
+                            posIdParticipantDebts.put(negativeId, posIdParticipantDebts.get(negativeId).subtract(positiveDebt));
                         }
 
                         allParticipantToOtherParticipantsBalancesInGroup.put(participant.getId(), participantDebts);
