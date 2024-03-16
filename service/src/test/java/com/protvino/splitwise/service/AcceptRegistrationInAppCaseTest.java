@@ -23,7 +23,7 @@ public class AcceptRegistrationInAppCaseTest {
 
     UserServiceImpl userService = new UserServiceImpl(passwordEncoder, userDao);
 
-    AcceptRegistrationInAppCase aCase = new AcceptRegistrationInAppCase(userDao, userService);
+    RegistrationService aCase = new RegistrationService(userDao, userService);
 
     @BeforeEach
     void setup() {
@@ -38,7 +38,7 @@ public class AcceptRegistrationInAppCaseTest {
         userDao.create(new EditUserRequest(userName, passwordEncoder.encode(password)));
 
         // Act
-        Throwable e = catchThrowable(() -> aCase.acceptRegistration(userName, password));
+        Throwable e = catchThrowable(() -> aCase.register(userName, password));
 
         // Assert
         assertThat(e).isInstanceOf(UserAlreadyExistsExeption.class);
@@ -51,7 +51,7 @@ public class AcceptRegistrationInAppCaseTest {
         String password = "test_password";
 
         // Act
-        aCase.acceptRegistration(userName,password);
+        aCase.register(userName,password);
 
         // Assert
         User expectedUser = userDao.findByUserName(userName);

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,7 @@ public class ExpenseController {
             .id(ThreadLocalRandom.current().nextLong())
             .groupId(ThreadLocalRandom.current().nextLong())
             .payingParticipantId(ThreadLocalRandom.current().nextLong())
-            .total(ThreadLocalRandom.current().nextBigDecimal())
+            .total(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt()))
             .comment("Comment" + ThreadLocalRandom.current().nextInt(1000))
             .build();
         expenses.put(expense.getId(), expense);

@@ -1,4 +1,4 @@
-package com.protvino.splitwise.model;
+package com.protvino.splitwise.model.dto;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +9,10 @@ import java.math.BigDecimal;
 @Value
 @Builder
 @RequiredArgsConstructor
-public class DebtInExpenseView {
+public class ExpenseEntryView {
 
-    Long participantId;
-
-    Long payingParticipantId;
-
+    Long expenseId;
+    Long payerParticipantId;
+    Long debtorParticipantId;
     BigDecimal amount;
 }

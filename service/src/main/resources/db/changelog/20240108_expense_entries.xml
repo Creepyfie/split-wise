@@ -2,22 +2,19 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
-    <changeSet author="mbaranov" id="20240108_debt_in_expense">
+    <changeSet author="mbaranov" id="20240108_expense_entries">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="debt_in_expense"/>
+                <tableExists tableName="expense_entries"/>
             </not>
         </preConditions>
 
-        <createTable tableName="debt_in_expense" remarks="Сумма долга в конкретном чеке между участниками траты (чека)">
+        <createTable tableName="expense_entries" remarks="Доли участников в трате">
             <column name="expense_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="from_participant_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="to_participant_id" type="bigint">
-                <constraints nullable="false"/>
+            <column name="debtor_participant_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="amount" type="numeric" defaultValue="0" remarks="Сумма позиций в чеке для конкретного участника группы">
                 <constraints nullable="false"/>
@@ -30,6 +27,9 @@
             </column>
         </createTable>
 
-        <comment>Initial commit</comment>
+        <createIndex tableName="expense_entries"
+                     indexName="idx_expense_entries__expense_id">
+            <column name="expense_id"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

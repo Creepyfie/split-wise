@@ -1,15 +1,11 @@
 package com.protvino.splitwise.service;
 
-import com.protvino.splitwise._inmem.InMemoryDebtInExpenseDao;
+import com.protvino.splitwise._inmem.InMemoryExpenseEntryInExpenseDao;
 import com.protvino.splitwise._inmem.InMemoryGroupDao;
 import com.protvino.splitwise._inmem.InMemoryParticipantDao;
 import com.protvino.splitwise.domain.request.EditDebtInExpenseRequest;
 import com.protvino.splitwise.domain.request.EditGroupRequest;
 import com.protvino.splitwise.domain.request.EditParticipantRequest;
-import com.protvino.splitwise.domain.request.EditUserRequest;
-import com.protvino.splitwise.exceptions.UserAlreadyExistsExeption;
-import org.assertj.core.api.Long2DArrayAssert;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -17,16 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 
 @Tag("UNIT")
-public class BusinessServiceTest {
+public class ScoreServiceTest {
 
     private final InMemoryGroupDao inMemoryGroupDao = new InMemoryGroupDao();
     private final InMemoryParticipantDao inMemoryParticipantDao = new InMemoryParticipantDao();
-    private final InMemoryDebtInExpenseDao inMemoryDebtInExpenseDao = new InMemoryDebtInExpenseDao();
+    private final InMemoryExpenseEntryInExpenseDao inMemoryDebtInExpenseDao = new InMemoryExpenseEntryInExpenseDao();
 
-    BusinessService businessService = new BusinessService(inMemoryParticipantDao,inMemoryDebtInExpenseDao);
+    ScoreService scoreService = new ScoreService(inMemoryParticipantDao,inMemoryDebtInExpenseDao);
 
 
     @Test
@@ -51,7 +46,7 @@ public class BusinessServiceTest {
         inMemoryDebtInExpenseDao.create(new EditDebtInExpenseRequest(expenseId,participantId2, participantId2,0d));
 
         // Assert
-        Map<Long, BigDecimal> result = businessService.showAllBalances(groupId);
+        Map<Long, BigDecimal> result = scoreService.showAllBalances(groupId);
 
         Map<Long, BigDecimal> expected = new HashMap<>();
         expected.put(participantId1,amount1);
@@ -82,7 +77,7 @@ public class BusinessServiceTest {
         inMemoryDebtInExpenseDao.create(new EditDebtInExpenseRequest(expenseId,participantId2, participantId2,0d));
 
         // Assert
-        Map<Long, BigDecimal> result = businessService.showAllBalances(groupId);
+        Map<Long, BigDecimal> result = scoreService.showAllBalances(groupId);
 
         Map<Long, BigDecimal> expected = new HashMap<>();
         expected.put(participantId1,-amount1);
@@ -114,7 +109,7 @@ public class BusinessServiceTest {
         inMemoryDebtInExpenseDao.create(new EditDebtInExpenseRequest(expenseId2,participantId2, participantId3,amount2));
 
         // Assert
-        Map<Long, Map<Long, BigDecimal>> result = businessService.refactorDebts(groupId);
+        Map<Long, Map<Long, BigDecimal>> result = scoreService.refactorDebts(groupId);
         // Act
         Map<Long, Map<Long, BigDecimal>> expected = new HashMap<>();
 

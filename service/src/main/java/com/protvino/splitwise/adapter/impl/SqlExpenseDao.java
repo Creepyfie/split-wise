@@ -32,15 +32,15 @@ public class SqlExpenseDao implements ExpenseDao {
         Timestamp now = Timestamp.from(Instant.now());
 
         SqlParameterSource params = new MapSqlParameterSource()
-            .addValue("paying_participant_id", editExpenseRequest.getPayingParticipantId())
+            .addValue("payer_participant_id", editExpenseRequest.getPayingParticipantId())
             .addValue("total", editExpenseRequest.getTotal())
             .addValue("comment", editExpenseRequest.getComment())
             .addValue("created", now)
             .addValue("updated", now);
 
         String sql = """
-            INSERT INTO expenses(paying_participant_id, total, comment, created, updated)
-            VALUES (:paying_participant_id, :total, :comment, :created, : updated)
+            INSERT INTO expenses(payer_participant_id, total, comment, created, updated)
+            VALUES (:payer_participant_id, :total, :comment, :created, : updated)
             RETURNING id""";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -56,14 +56,14 @@ public class SqlExpenseDao implements ExpenseDao {
 
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("id", id)
-            .addValue("paying_participant_id", editExpenseRequest.getPayingParticipantId())
+            .addValue("payer_participant_id", editExpenseRequest.getPayingParticipantId())
             .addValue("total", editExpenseRequest.getTotal())
             .addValue("comment", editExpenseRequest.getComment())
             .addValue("updated", now);
 
         String sql = """
             UPDATE expenses
-            SET paying_participant_id = :paying_participant_id,
+            SET payer_participant_id = :payer_participant_id,
                 total = :total,
                 comment = :comment,
                 updated = :updated
@@ -91,7 +91,7 @@ public class SqlExpenseDao implements ExpenseDao {
         public Expense mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Expense(
                 rs.getLong("id"),
-                rs.getLong("paying_participant_id"),
+                rs.getLong("payer_participant_id"),
                 rs.getBigDecimal("total"),
                 rs.getString("comment")
             );

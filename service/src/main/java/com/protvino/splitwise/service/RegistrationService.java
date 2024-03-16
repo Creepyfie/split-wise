@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AcceptRegistrationInAppCase {
+public class RegistrationService {
 
     private final UserDao userDao;
     private final UserServiceImpl userService;
 
-    public void acceptRegistration(String userName, String password) {
+    public void register(String userName, String password) {
 
         boolean userExists = userDao.checkIfExists(userName);
         if (userExists) {

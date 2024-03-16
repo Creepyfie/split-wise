@@ -1,27 +1,33 @@
 package com.protvino.splitwise.service;
 
 
-import com.protvino.splitwise.adapter.DebtInExpenseDao;
+import com.protvino.splitwise.adapter.ExpenseEntryDao;
 import com.protvino.splitwise.adapter.ParticipantDao;
+import com.protvino.splitwise.domain.value.ExpenseEntry;
 import com.protvino.splitwise.domain.value.Participant;
 import com.protvino.splitwise.model.DebtInExpenseView;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.SetUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static java.math.BigDecimal.ZERO;
-import static java.util.stream.Collectors.*;
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.reducing;
 
-@Component
+@Service
 @RequiredArgsConstructor
-public class BusinessService {
+public class ScoreService {
 
     private final ParticipantDao participantDao;
-    private final DebtInExpenseDao debtInExpenseDao;
+    private final ExpenseEntryDao expenseEntryDao;
+
 
     /**
      * Возвращает список моих участий (debts) в чужих тратах (expenses).
@@ -29,15 +35,15 @@ public class BusinessService {
      */
     public Map<Long, BigDecimal> showScoreRelativeToForeignParticipants(long participantId) {
 
-        Map<Long, BigDecimal> participantDebtsByPayerId = findParticipantDebts(participantId);
-        Map<Long, BigDecimal> foreignDebtsByParticipantId = findForeignDebts(participantId);
+        Map<Long, BigDecimal> participantExpenseEntriesByPayerId = findParticipantExpenseEntries(participantId);
+        Map<Long, BigDecimal> foreignExpenseEntriesByParticipantId = findForeignExpenseEntries(participantId);
 
         Map<Long, BigDecimal> scoreRelativeForeigners = new HashMap<>();
 
-        for (Long foreignParticipantId : SetUtils.union(participantDebtsByPayerId.keySet(), foreignDebtsByParticipantId.keySet())) {
+        for (Long foreignParticipantId : SetUtils.union(participantExpenseEntriesByPayerId.keySet(), foreignExpenseEntriesByParticipantId.keySet())) {
 
-            BigDecimal positiveScore = firstNonNull(foreignDebtsByParticipantId.get(foreignParticipantId), ZERO);
-            BigDecimal negativeScore = firstNonNull(participantDebtsByPayerId.get(foreignParticipantId), ZERO);
+            BigDecimal positiveScore = firstNonNull(foreignExpenseEntriesByParticipantId.get(foreignParticipantId), ZERO);
+            BigDecimal negativeScore = firstNonNull(participantExpenseEntriesByPayerId.get(foreignParticipantId), ZERO);
 
             BigDecimal totalScore = positiveScore.subtract(negativeScore);
 
@@ -47,24 +53,24 @@ public class BusinessService {
         return scoreRelativeForeigners;
     }
 
-    private Map<Long, BigDecimal> findForeignDebts(long participantId) {
+    private Map<Long, BigDecimal> findForeignExpenseEntries(long participantId) {
 
-        List<DebtInExpenseView> debtsByForeigners = debtInExpenseDao.findForeignDebtsInExpensesPaidByParticipant(participantId);
+        List<ExpenseEntry> expenseEntriesByForeigners = expenseEntryDao.findForeignDebtsInExpensesPaidByParticipant(participantId);
 
-        return debtsByForeigners.stream()
+        return expenseEntriesByForeigners.stream()
             .collect(groupingBy(
-                DebtInExpenseView::getParticipantId,
-                reducing(ZERO, DebtInExpenseView::getAmount, BigDecimal::add)
+                ExpenseEntry::getParticipantId,
+                reducing(ZERO, ExpenseEntry::getAmount, BigDecimal::add)
             ));
     }
 
-    private Map<Long, BigDecimal> findParticipantDebts(long participantId) {
+    private Map<Long, BigDecimal> findParticipantExpenseEntries(long participantId) {
 
-        List<DebtInExpenseView> debtsByParticipant = debtInExpenseDao.findDebtsInForeignExpensesByParticipantId(participantId);
+        List<ExpenseEntry> debtsByParticipant = expenseEntryDao.findDebtsInForeignExpensesByParticipantId(participantId);
 
         return debtsByParticipant.stream()
             .collect(groupingBy(
-                DebtInExpenseView::getPayingParticipantId,
+                ExpenseEntry::getPayingParticipantId,
                 reducing(ZERO, DebtInExpenseView::getAmount, BigDecimal::add)
             ));
     }
